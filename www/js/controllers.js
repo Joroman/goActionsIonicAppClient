@@ -1,5 +1,40 @@
 angular.module('myApp.controllers', [])
 
+.controller('ClientsController',function($scope, $ionicActionSheet, $timeout){
+    // Triggered on a button click, or some other target
+ $scope.show = function() {
+
+   // Show the action sheet
+  $ionicActionSheet.show({
+      titleText: 'ActionSheet Example',
+      buttons: [
+        { text: '<i class="icon ion-share"></i> Share' },
+        { text: '<i class="icon ion-arrow-move"></i> Move' },
+      ],
+      destructiveText: 'Delete',
+      cancelText: 'Cancel',
+      cancel: function() {
+        console.log('CANCELLED');
+      },
+      buttonClicked: function(index) {
+        console.log('BUTTON CLICKED', index);
+        return true;
+      },
+      destructiveButtonClicked: function() {
+        console.log('DESTRUCT');
+        return true;
+      }
+    });
+     
+   // For example's sake, hide the sheet after two seconds
+   $timeout(function() {
+     hideSheet();
+   }, 2000);
+
+ };
+    
+})
+
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
 
   // With the new view caching in Ionic, Controllers are only called

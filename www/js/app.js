@@ -27,47 +27,90 @@ angular.module('myApp', ['ionic', 'myApp.controllers'])
 
     .state('app', {
     url: '/app',
+    //abstract: true abstract state and this state defin the state in wich you can nested (anidar) other states
+    //abstract top state
     abstract: true,
-    templateUrl: 'templates/menu.html',
+    templateUrl: 'templates/sidebar.html',
     controller: 'AppCtrl'
   })
 
-  .state('app.search', {
-    url: '/search',
+  .state('app.home', {
+    url: '/home',
     views: {
-      'menuContent': {
-        templateUrl: 'templates/search.html'
+      'mainContent': {
+        templateUrl: 'templates/home.html'
       }
     }
   })
 
-  .state('app.browse', {
-      url: '/browse',
+  .state('app.getstartaction', {
+      url: '/getStartAction',
       views: {
-        'menuContent': {
-          templateUrl: 'templates/browse.html'
+        'mainContent': {
+          templateUrl: 'templates/getstartaction.html'
         }
       }
     })
-    .state('app.playlists', {
-      url: '/playlists',
+    .state('app.closeactions', {
+      url: '/closeActions',
       views: {
-        'menuContent': {
-          templateUrl: 'templates/playlists.html',
+        'mainContent': {
+          templateUrl: 'templates/close_actions.html',
           controller: 'PlaylistsCtrl'
         }
       }
     })
 
-  .state('app.single', {
-    url: '/playlists/:playlistId',
+   .state('app.clients', {
+      url: '/clients',
+      views: {
+        'mainContent': {
+          templateUrl: 'templates/clients.html',
+          controller: 'ClientsController'
+        }
+      }
+    })
+
+  .state('app.contacts', {
+    url: '/clients/:id',
     views: {
-      'menuContent': {
-        templateUrl: 'templates/playlist.html',
-        controller: 'PlaylistCtrl'
+      'mainContent': {
+        templateUrl: 'templates/contacts.html',
+        controller: ''
       }
     }
-  });
+  })
+   .state('app.sales', {
+      url: '/sales',
+      views: {
+        'mainContent': {
+          templateUrl: 'templates/sales.html',
+          controller: ''
+        }
+      }
+    })
+  
+    .state('app.contactus', {
+      url: '/contactus',
+      views: {
+        'mainContent': {
+          templateUrl: 'templates/contactus.html',
+          controller: ''
+        }
+      }
+    })
+  
+   .state('app.login', {
+      url: '/login',
+      views: {
+        'mainContent': {
+          templateUrl: 'templates/login.html',
+          controller: ''
+        }
+      }
+    })
+  
+  ;
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/playlists');
+  $urlRouterProvider.otherwise('/app/home');
 });
