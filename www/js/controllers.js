@@ -1,17 +1,37 @@
 angular.module('myApp.controllers', [])
 
-.controller('ClientsController',function($scope, $ionicActionSheet, $timeout){
+.controller('ClientsController',['$scope','$ionicActionSheet','$timeout',function($scope, $ionicActionSheet, $timeout){
     // Triggered on a button click, or some other target
  $scope.show = function() {
+//client list recover
+     $scope.client={
+                    _id:"0",
+            company_name  :"",
+            direction     :"",
+            city          :"",
+            country       :"",
+            phone         :"",
+            email         :"",
+            contacts:[]
+            };
+        //GET CLIENTS
+   /**     clientsService.query(
+            function(res){
+                $scope.clients=res;
+                  console.log($scope.clients);
 
-   // Show the action sheet
+        });
+ 
+     **/
+     
+     
+// Show the action sheet
   $ionicActionSheet.show({
-      titleText: 'ActionSheet Example',
       buttons: [
-        { text: '<i class="icon ion-share"></i> Share' },
-        { text: '<i class="icon ion-arrow-move"></i> Move' },
+        { text: '<i class="icon ion-android-contacts"></i> Show Client Contacts' },
+        { text: '<i class="icon ion-plus-circled"></i> New Client' }
       ],
-      destructiveText: 'Delete',
+      destructiveText: 'Delete Client',
       cancelText: 'Cancel',
       cancel: function() {
         console.log('CANCELLED');
@@ -33,7 +53,7 @@ angular.module('myApp.controllers', [])
 
  };
     
-})
+}])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
 
