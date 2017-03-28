@@ -23,7 +23,7 @@
     <ion-header-bar class="bar-positive">
       <h1 class="title">Navigation</h1>
     </ion-header-bar>
-    <!-- ion content to put your code to display the content-->  
+    <!-- ion content to put your code to display the content-->
     <ion-content>
         <!--ion-list is made by ion-item-->
       <ion-list>
@@ -48,8 +48,14 @@
         <ion-item menu-close href="#/app/contactus">
             ContactUs
         </ion-item>
-        <ion-item menu-close ng-click="login()">
-            Login
+        <ion-item menu-close ng-click="login()" ng-if="!loggedIn">
+          Login
+        </ion-item>
+        <ion-item menu-close ng-click="logOut()" ng-if="loggedIn">
+          Logout
+        </ion-item>
+        <ion-item menu-close ng-click="register()">
+          Register
         </ion-item>
       </ion-list>
     </ion-content>
