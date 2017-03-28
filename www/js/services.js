@@ -3,7 +3,7 @@ angular.module('myApp.services',['ngResource'])
 .constant("baseURL","http://192.168.1.129:3000/")
 
 .factory('clientsService',['$resource','baseURL',function($resource,baseURL){
-    return $resource(baseURL+'clients/:id',null, {
+    return $resource(baseURL+"clients/:id",null, {
         update:{method:'PUT'}
     });
 }])

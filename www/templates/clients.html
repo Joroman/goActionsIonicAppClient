@@ -2,13 +2,27 @@
   <ion-content>
     <div class="list">
         <!--put ng-repeat into <A-->
-                <a ng-repeat="client in clients" class="item item-thumbnail-left" ng-click='show()'>
-                  <img src="img/ionic.png">
-                  <h2>{{client.company_name}}</h2>
-                  <p>{{client.direction}}  {{client.city}}</p>
-                  <p>{{client.country}}</p>
-                  <p>{{client.phone}}  {{client.email}}</p>
-                </a>
+          <div ng-repeat="client in clients" ng-click='show()'>
+                  <div class="item item-divider" style="background-color:#4a87ee;text-align: center">
+                    <h2 style="color:#fff">{{client.company_name}}</h2>
+                  </div>
+                  <a class="item item-icon-left" ng-click='show()'>
+                    <i class="icon ion-ios-location-outline"></i>
+                  {{client.direction}}  {{client.city}}
+                  </a>
+                  <a class="item item-icon-left" ng-click='show()'>
+                    <i class="icon ion-map"></i>
+                    {{client.country}}
+                  </a>
+                  <a class="item item-icon-left" ng-click='show()'>
+                    <i class="icon ion-ios-telephone-outline"></i>
+                    {{client.phone}}
+                  </a>
+                  <a class="item item-icon-left" ng-click='show()'>
+                    <i class="icon ion-email"></i>
+                    {{client.email}}
+                  </a>
+        </div>
     </div>
   </ion-content>
 </ion-view>

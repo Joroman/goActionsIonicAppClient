@@ -3,12 +3,17 @@ angular.module('myApp.controllers', [])
 .controller('ClientsController',['$scope','$ionicActionSheet','$timeout','clientsService',function($scope, $ionicActionSheet, $timeout,clientsService){
     // Triggered on a button click, or some other target
     //client list recover
-           clientsService.query(
-                function(res){
-                    $scope.clients=res;
-                      console.log($scope.clients);
 
-            });
+
+  clientsService.query(
+      function (response) {
+        $scope.clients = response;
+           console.log($scope.clients);
+      },
+      function (response) {
+         response.console.error();
+  });
+
 
  $scope.show = function() {
 // Show the action sheet
@@ -21,6 +26,7 @@ angular.module('myApp.controllers', [])
       cancelText: 'Cancel',
       cancel: function() {
         console.log('CANCELLED');
+          return true;
       },
       buttonClicked: function(index) {
         console.log('BUTTON CLICKED', index);
