@@ -89,7 +89,7 @@ angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services'])
         }
       }
     })
-  
+
     .state('app.contactus', {
       url: '/contactus',
       views: {
@@ -99,7 +99,7 @@ angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services'])
         }
       }
     })
-  
+
    .state('app.login', {
       url: '/login',
       views: {
@@ -109,7 +109,7 @@ angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services'])
         }
       }
     })
-  
+
   ;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/home');

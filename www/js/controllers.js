@@ -1,32 +1,18 @@
 angular.module('myApp.controllers', [])
 
-.controller('ClientsController',['$scope','$ionicActionSheet','$timeout',function($scope, $ionicActionSheet, $timeout){
+.controller('ClientsController',['$scope','$ionicActionSheet','$timeout','clientsService',function($scope, $ionicActionSheet, $timeout,clientsService){
     // Triggered on a button click, or some other target
- $scope.show = function() {
-//client list recover
-     $scope.client={
-                    _id:"0",
-            company_name  :"",
-            direction     :"",
-            city          :"",
-            country       :"",
-            phone         :"",
-            email         :"",
-            contacts:[]
-            };
-        //GET CLIENTS
-   /**     clientsService.query(
-            function(res){
-                $scope.clients=res;
-                  console.log($scope.clients);
+    //client list recover
+           clientsService.query(
+                function(res){
+                    $scope.clients=res;
+                      console.log($scope.clients);
 
-        });
- 
-     **/
-     
-     
+            });
+
+ $scope.show = function() {
 // Show the action sheet
-  $ionicActionSheet.show({
+  var hideSheet= $ionicActionSheet.show({
       buttons: [
         { text: '<i class="icon ion-android-contacts"></i> Show Client Contacts' },
         { text: '<i class="icon ion-plus-circled"></i> New Client' }
@@ -45,14 +31,14 @@ angular.module('myApp.controllers', [])
         return true;
       }
     });
-     
+
    // For example's sake, hide the sheet after two seconds
    $timeout(function() {
      hideSheet();
    }, 2000);
 
  };
-    
+
 }])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {

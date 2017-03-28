@@ -2,20 +2,13 @@
   <ion-content>
     <div class="list">
         <!--put ng-repeat into <A-->
-       
-                <a class="item item-thumbnail-left" ng-click='show()'>
+                <a ng-repeat="client in clients" class="item item-thumbnail-left" ng-click='show()'>
                   <img src="img/ionic.png">
-                  <h2>Pretty Hate Machine</h2>
-                  <p>Nine Inch Nails</p>
-                </a>  
-        
-                <a class="item item-thumbnail-left" ng-click='show()'>
-                  <img src="img/ionic.png">
-                  <h2>Pretty Hate Machine</h2>
-                  <p>Nine Inch Nails</p>
-                </a>  
-         
+                  <h2>{{client.company_name}}</h2>
+                  <p>{{client.direction}}  {{client.city}}</p>
+                  <p>{{client.country}}</p>
+                  <p>{{client.phone}}  {{client.email}}</p>
+                </a>
     </div>
   </ion-content>
 </ion-view>
-
