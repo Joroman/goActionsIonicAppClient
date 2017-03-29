@@ -1,52 +1,5 @@
 angular.module('myApp.controllers', [])
 
-.controller('ClientsController',['$scope','$ionicActionSheet','$timeout','clientsService',function($scope, $ionicActionSheet, $timeout,clientsService){
-    // Triggered on a button click, or some other target
-    //client list recover
-
-
-  clientsService.query(
-      function (response) {
-        $scope.clients = response;
-           console.log($scope.clients);
-      },
-      function (response) {
-         response.console.error();
-  });
-
-
- $scope.show = function() {
-// Show the action sheet
-  var hideSheet= $ionicActionSheet.show({
-      buttons: [
-        { text: '<i class="icon ion-android-contacts"></i> Show Client Contacts' },
-        { text: '<i class="icon ion-plus-circled"></i> New Client' }
-      ],
-      destructiveText: 'Delete Client',
-      cancelText: 'Cancel',
-      cancel: function() {
-        console.log('CANCELLED');
-          return true;
-      },
-      buttonClicked: function(index) {
-        console.log('BUTTON CLICKED', index);
-        return true;
-      },
-      destructiveButtonClicked: function() {
-        console.log('DESTRUCT');
-        return true;
-      }
-    });
-
-   // For example's sake, hide the sheet after two seconds
-   $timeout(function() {
-     hideSheet();
-   }, 2000);
-
- };
-
-}])
-
 .controller('AppCtrl', function ($scope, $rootScope, $ionicModal, $timeout, $localStorage,AuthFactory) {
 
     // With the new view caching in Ionic, Controllers are only called
@@ -145,16 +98,164 @@ angular.module('myApp.controllers', [])
     });
 })
 
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
-})
+.controller('ClientsController',['$scope','$ionicActionSheet','$timeout','clientsService','$state',function($scope, $ionicActionSheet, $timeout, clientsService, $state){
+    // Triggered on a button click, or some other target
+    //client list recover
+  clientsService.query(
+      function (response) {
+        $scope.clients = response;
+        $scope.clients.sort();
+           console.log($scope.clients);
+      },
+      function (response) {
+         response.console.error();
+  });
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
-});
+
+ $scope.show = function(client) {
+// Show the action sheet
+  var hideSheet= $ionicActionSheet.show({
+      buttons: [
+        { text: '<i class="icon ion-android-contacts"></i> Show Client Contacts' },
+        { text: '<i class="icon ion-plus-circled"></i> New Client' }
+      ],
+      destructiveText: 'Delete Client',
+      buttonClicked: function(index) {
+        console.log('BUTTON CLICKED', index);
+        if(index == 0){
+          $state.go('app.contacts',{id:client._id});
+        }
+        return true;
+      },
+      destructiveButtonClicked: function() {
+        console.log('DESTRUCT');
+        return true;
+      }
+    });
+
+   // For example's sake, hide the sheet after two seconds
+   $timeout(function() {
+     hideSheet();
+   }, 2000);};
+}])
+
+.controller('ContactsController',['$scope','$stateParams','clientsService','$ionicModal','$ionicActionSheet','$ionicPopup',
+function($scope,$stateParams,clientsService,$ionicModal,$ionicActionSheet,$ionicPopup){
+
+    $scope.contact ={name:"",category:"",phone:"",email:""};
+    //GET the client and his contacts
+    $scope.client = clientsService.get({id:$stateParams.id},
+            function(response){
+              $scope.client=response;
+            },function(response){
+
+            });
+
+  /******************** $ionicActionSheet*****************************/
+    $scope.show = function(contact){
+      $scope.contact=contact;
+      var hideSheet= $ionicActionSheet.show({
+          buttons: [
+            { text: '<i class="icon ion-android-contacts"></i> New Contact' },
+            { text: '<i class="icon ion-plus-circled"></i> Edit Contact' }
+          ],
+          destructiveText: 'Delete Client',
+          buttonClicked: function(index) {
+            $scope.contact ={name:"",category:"",phone:"",email:""};
+            if(index==0){
+              $scope.createNewContactModal();
+            }
+            return true;
+          },
+          destructiveButtonClicked: function() {
+              $scope.showPopup();
+              $scope.contact ={name:"",category:"",phone:"",email:""};
+            return true;
+          }
+        });
+
+       // For example's sake, hide the sheet after two seconds
+       $timeout(function() {
+         hideSheet();
+       }, 2000);
+    };
+
+    /********************$ionicModal**************************/
+  // Create the new contact modal that we will use later
+    $ionicModal.fromTemplateUrl('templates/newContact.html', {
+        scope: $scope
+    }).then(function (modal) {
+        $scope.modal = modal;
+    });
+
+    // Triggered in the newContact modal to close it
+    $scope.closeNewContact = function () {
+        $scope.modal.hide();
+    };
+
+    // Open the NewContact modal
+    $scope.createNewContactModal = function () {
+        $scope.modal.show();
+    };
+    // create a new contact and save to the BD. Fisrt delete 2on post=save
+    $scope.createNewClient = function(){
+      if($scope.client.contacts==null){$scope.client.contacts=[];}
+
+           $scope.client.contacts.push($scope.contact);
+
+           clientsService.delete({id:$scope.client._id},function(){
+               clientsService.save($scope.client,function(res){
+                   $scope.client=res;
+               });
+           });
+           $scope.contact ={name:"",category:"",phone:"",email:""};
+             $scope.closeNewContact();
+    }
+
+  /**************************$ionicPopup************************/
+// Triggered on a button click, or some other target
+$scope.showPopup = function() {
+  // An elaborate, custom popup
+  var myPopup = $ionicPopup.show({
+    template: 'Are you sure you want to delete the contact?',
+    title: 'Delete Contact',
+    scope: $scope,
+    buttons: [
+      { text: 'Cancel' },
+      {
+        text: '<b>Delete</b>',
+        type: 'button-assertive',
+        onTap: function(e) {
+          $scope.deleteContact();
+        }
+      }
+    ]
+  });
+
+  myPopup.then(function(res) {
+    console.log('Tapped!', res);
+  });
+
+  $timeout(function() {
+     myPopup.close(); //close the popup after 3 seconds for some reason
+  }, 3000);
+ };
+
+ /**********DELETE contact***************************/
+ //DELETE CONTACT
+      $scope.deleteContact    = function(){
+          if($scope.contact!=null){
+              var index=$scope.client.contacts.indexOf($scope.contact);
+              if(index != -1){
+                  $scope.client.contacts.splice(index,1);
+                  //put operation
+                  console.log($scope.id);
+                  clientsService.update({id:$scope.client._id},$scope.client);
+              }
+
+          }
+
+      };
+
+}])
+;

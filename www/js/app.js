@@ -76,7 +76,7 @@ $rootScope.$on('$stateChangeSuccess', function () {
       views: {
         'mainContent': {
           templateUrl: 'templates/close_actions.html',
-          controller: 'PlaylistsCtrl'
+          controller: ''
         }
       }
     })
@@ -96,7 +96,7 @@ $rootScope.$on('$stateChangeSuccess', function () {
     views: {
       'mainContent': {
         templateUrl: 'templates/contacts.html',
-        controller: ''
+        controller: 'ContactsController'
       }
     }
   })

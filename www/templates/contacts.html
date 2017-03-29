@@ -1,14 +1,15 @@
 <ion-view view-title="Contacts">
   <ion-content>
     <div class="list">
+      <div ng-repeat="contact in client.contacts">
+        <a class="item item-avatar" ng-click="show(contact)">
+          <img src="img/contact.png">
+          <h2>{{contact.name}}  {{contact.category}}</h2>
+          <p><i class="icon ion-ios-telephone-outline"></i> {{contact.phone}}</p>
+          <p><i class="icon ion-email"></i> {{contact.email}}</p>
+        </a>
+      </div>
 
-    <a class="item item-avatar" href="#">
-      <img src="img/ionic.png">
-      <h2>Venkman</h2>
-      <p>Back off, man. I'm a scientist.</p>
-    </a>
-
-
-</div>
+    </div>
   </ion-content>
 </ion-view>

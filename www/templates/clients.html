@@ -2,7 +2,7 @@
   <ion-content>
     <div class="list">
         <!--put ng-repeat into <A-->
-          <div ng-repeat="client in clients" ng-click='show()'>
+          <div ng-repeat="client in clients" ng-click='show(client)'>
                   <div class="item item-divider" style="background-color:#4a87ee;text-align: center">
                     <h2 style="color:#fff">{{client.company_name}}</h2>
                   </div>

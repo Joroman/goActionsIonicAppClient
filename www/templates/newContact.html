@@ -1,0 +1,33 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-balanced">
+    <h1 class="title">{{client.company_name}}  New Contact</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeNewContact()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form ng-submit="createNewClient()">
+      <div class="list">
+        <label class="item item-input">
+          <span class="input-label">Name</span>
+          <input type="text" ng-model="contact.name" required>
+        </label>
+         <label class="item item-input">
+          <span class="input-label">  <i class="icon ion-card"> Category</i></span>
+          <input type="text" ng-model="contact.category"required>
+        </label>
+         <label class="item item-input">
+          <span class="input-label">  <i class="icon ion-ios-telephone-outline">Phone</i></span>
+          <input type="number" ng-model="contact.phone" required>
+        </label>
+       <label class="item item-input">
+          <span class="input-label"> <i class="icon ion-email">Email</i></span>
+          <input type="email" ng-model="contact.email" required>
+        </label>
+        <label class="item">
+          <button class="button button-block button-balanced" type="submit" ng-disabled="editRespForm.$invalid">Create</button>
+        </label>
+      </div>
+    </form>
+  </ion-content>
+</ion-modal-view>
