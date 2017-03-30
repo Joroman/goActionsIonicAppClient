@@ -2,11 +2,11 @@
   <ion-header-bar class="bar bar-balanced">
     <h1 class="title">{{client.company_name}}  New Contact</h1>
     <div class="buttons">
-      <button class="button button-clear" ng-click="closeNewContact()">Close</button>
+      <button class="button button-clear" ng-click="closeEditContact()">Close</button>
     </div>
   </ion-header-bar>
   <ion-content>
-    <form ng-submit="createNewClient()">
+    <form ng-submit="updateClientContact()">
       <div class="list">
         <label class="item item-input">
           <span class="input-label">Name</span>

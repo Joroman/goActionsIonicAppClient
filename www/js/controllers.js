@@ -156,21 +156,21 @@ function($scope,$stateParams,clientsService,$ionicModal,$ionicActionSheet,$ionic
       $scope.contact=contact;
       var hideSheet= $ionicActionSheet.show({
           buttons: [
-            { text: '<i class="icon ion-android-contacts"></i> New Contact' },
             { text: '<i class="icon ion-plus-circled"></i> Edit Contact' }
           ],
           destructiveText: 'Delete Client',
           buttonClicked: function(index) {
-            $scope.contact ={name:"",category:"",phone:"",email:""};
             if(index==0){
-              $scope.createNewContactModal();
+                $scope.editContactModal();
             }
-            return true;
+             hideSheet();
           },
           destructiveButtonClicked: function() {
               $scope.showPopup();
               $scope.contact ={name:"",category:"",phone:"",email:""};
+               hideSheet();
             return true;
+
           }
         });
 
@@ -195,6 +195,7 @@ function($scope,$stateParams,clientsService,$ionicModal,$ionicActionSheet,$ionic
 
     // Open the NewContact modal
     $scope.createNewContactModal = function () {
+        $scope.contact ={name:"",category:"",phone:"",email:""};
         $scope.modal.show();
     };
     // create a new contact and save to the BD. Fisrt delete 2on post=save
@@ -211,6 +212,28 @@ function($scope,$stateParams,clientsService,$ionicModal,$ionicActionSheet,$ionic
            $scope.contact ={name:"",category:"",phone:"",email:""};
              $scope.closeNewContact();
     }
+
+    /*******************update client when you Edit************************/
+    // Create the new contact modal that we will use later
+      $ionicModal.fromTemplateUrl('templates/editContact.html', {
+          scope: $scope
+      }).then(function (modal) {
+          $scope.modal_edit = modal;
+      });
+
+      // Triggered in the newContact modal to close it
+      $scope.closeEditContact = function () {
+          $scope.modal_edit.hide();
+      };
+
+      // Open the NewContact modal
+      $scope.editContactModal = function () {
+          $scope.modal_edit.show();
+      };
+    $scope.updateClientContact = function(){
+           clientsService.update({id:$scope.client._id},$scope.client);
+             $scope.closeEditContact();
+       };
 
   /**************************$ionicPopup************************/
 // Triggered on a button click, or some other target

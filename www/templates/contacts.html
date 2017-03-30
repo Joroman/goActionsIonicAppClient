@@ -1,4 +1,8 @@
 <ion-view view-title="Contacts">
+  <ion-nav-buttons side="right">
+   <button class="button button-clear" ng-click="createNewContactModal()"><i class="icon ion-compose" ></i></button>
+
+ </ion-nav-buttons>
   <ion-content>
     <div class="list">
       <div ng-repeat="contact in client.contacts">
