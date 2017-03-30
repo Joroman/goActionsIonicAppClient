@@ -98,37 +98,48 @@ angular.module('myApp.controllers', [])
     });
 })
 
-.controller('ClientsController',['$scope','$ionicActionSheet','$timeout','clientsService','$state',function($scope, $ionicActionSheet, $timeout, clientsService, $state){
+.controller('ClientsController',['$scope','$ionicActionSheet','$timeout','clientsService','$state','$ionicModal','$ionicPopup',
+function($scope, $ionicActionSheet, $timeout, clientsService, $state, $ionicModal,$ionicPopup){
     // Triggered on a button click, or some other target
     //client list recover
-  clientsService.query(
-      function (response) {
-        $scope.clients = response;
-        $scope.clients.sort();
-           console.log($scope.clients);
-      },
-      function (response) {
-         response.console.error();
-  });
+  $scope.client = {company_name:"",direction:"",phone:"",email:""};
+  $scope.loadClients = function(){
+    clientsService.query(
+        function (response) {
+          $scope.clients = response.sort(function(a, b){return a.company_name - b.company_name});
+        },
+        function (response) {
+           response.console.error();
+    });
 
+  };
+
+$scope.loadClients();
 
  $scope.show = function(client) {
+   $scope.client=client;
+   $scope.client.phone=JSON.parse(client.phone);
 // Show the action sheet
   var hideSheet= $ionicActionSheet.show({
       buttons: [
         { text: '<i class="icon ion-android-contacts"></i> Show Client Contacts' },
-        { text: '<i class="icon ion-plus-circled"></i> New Client' }
+        { text: '<i class="icon ion-plus-circled"></i> Edit Client' }
       ],
       destructiveText: 'Delete Client',
       buttonClicked: function(index) {
         console.log('BUTTON CLICKED', index);
         if(index == 0){
+          //go to contacts
           $state.go('app.contacts',{id:client._id});
+        }
+        if(index == 1){
+         $scope.editClientModal();
         }
         return true;
       },
       destructiveButtonClicked: function() {
-        console.log('DESTRUCT');
+        //delete client
+         $scope.showPopup();
         return true;
       }
     });
@@ -136,7 +147,109 @@ angular.module('myApp.controllers', [])
    // For example's sake, hide the sheet after two seconds
    $timeout(function() {
      hideSheet();
-   }, 2000);};
+   }, 2000);
+
+ };
+
+   /********************$ionicModal Create Client**************************/
+ // Create the new contact modal that we will use later
+   $ionicModal.fromTemplateUrl('templates/newClient.html', {
+       scope: $scope
+   }).then(function (modal) {
+       $scope.modal = modal;
+   });
+
+   // Triggered in the newContact modal to close it
+   $scope.closeNewClient = function () {
+       $scope.modal.hide();
+   };
+
+   // Open the NewContact modal
+   $scope.createNewClientModal = function () {
+      $scope.client = {company_name:"",direction:"",phone:"",email:""};
+       $scope.modal.show();
+   };
+
+   $scope.createNewClient = function () {
+     clientsService.save($scope.client,function(res){
+         $scope.client=res;
+     });
+     $scope.closeNewClient();
+     $scope.loadClients();
+   }
+
+   /********************$ionicModal Edit Client **************************/
+ // Create the new contact modal that we will use later
+   $ionicModal.fromTemplateUrl('templates/editClient.html', {
+       scope: $scope
+   }).then(function (modal) {
+       $scope.modal_edit = modal;
+   });
+
+   // Triggered in the newContact modal to close it
+   $scope.closeEditClient = function () {
+       $scope.modal_edit.hide();
+   };
+
+   // Open the NewContact modal
+   $scope.editClientModal = function () {
+       $scope.modal_edit.show();
+   };
+
+   $scope.editClient = function () {
+     clientsService.update({id:$scope.client._id},$scope.client)
+     .$promise.then(
+         function(response){
+
+           $scope.loadClients();
+         },function(response){
+             $scope.message = "Error: "+response.status + " " + response.statusText;
+         });
+     $scope.closeEditClient();
+
+   }
+
+   /*******************DELETE CLIENT**********************************/
+   /**************************$ionicPopup************************/
+ // Triggered on a button click, or some other target
+ $scope.showPopup = function() {
+   // An elaborate, custom popup
+   var myPopup = $ionicPopup.show({
+     template: 'Are you sure you want to delete the Client and all the contacts?',
+     title: 'Delete Client',
+     scope: $scope,
+     buttons: [
+       { text: 'Cancel' },
+       {
+         text: '<b>Delete</b>',
+         type: 'button-assertive',
+         onTap: function(e) {
+           $scope.deleteClient();
+         }
+       }
+     ]
+   });
+
+   myPopup.then(function(res) {
+     console.log('Tapped!', res);
+   });
+
+   $timeout(function() {
+      myPopup.close(); //close the popup after 3 seconds for some reason
+   }, 3000);
+  };
+
+  /**********DELETE client***************************/
+  //DELETE client
+       $scope.deleteClient    = function(){
+         clientsService.delete({id:$scope.client._id})
+         .$promise.then(
+             function(response){
+               $scope.loadClients();
+             },function(response){
+                 $scope.message = "Error: "+response.status + " " + response.statusText;
+             });
+       };
 }])
 
 .controller('ContactsController',['$scope','$stateParams','clientsService','$ionicModal','$ionicActionSheet','$ionicPopup',
@@ -144,16 +257,22 @@ function($scope,$stateParams,clientsService,$ionicModal,$ionicActionSheet,$ionic
 
     $scope.contact ={name:"",category:"",phone:"",email:""};
     //GET the client and his contacts
-    $scope.client = clientsService.get({id:$stateParams.id},
-            function(response){
-              $scope.client=response;
-            },function(response){
+    $scope.loadClient = function(){
+      clientsService.get({id:$stateParams.id})
+      .$promise.then(
+          function(response){
+            $scope.client=response;
+          },function(response){
+              $scope.message = "Error: "+response.status + " " + response.statusText;
+          });
+    };
 
-            });
-
+    $scope.loadClient();
   /******************** $ionicActionSheet*****************************/
     $scope.show = function(contact){
       $scope.contact=contact;
+      $scope.contact.phone=JSON.parse(contact.phone);
+
       var hideSheet= $ionicActionSheet.show({
           buttons: [
             { text: '<i class="icon ion-plus-circled"></i> Edit Contact' }
@@ -163,14 +282,11 @@ function($scope,$stateParams,clientsService,$ionicModal,$ionicActionSheet,$ionic
             if(index==0){
                 $scope.editContactModal();
             }
-             hideSheet();
+              return true;
           },
           destructiveButtonClicked: function() {
               $scope.showPopup();
-              $scope.contact ={name:"",category:"",phone:"",email:""};
-               hideSheet();
-            return true;
-
+                return true;
           }
         });
 
@@ -199,7 +315,7 @@ function($scope,$stateParams,clientsService,$ionicModal,$ionicActionSheet,$ionic
         $scope.modal.show();
     };
     // create a new contact and save to the BD. Fisrt delete 2on post=save
-    $scope.createNewClient = function(){
+    $scope.createNewContact = function(){
       if($scope.client.contacts==null){$scope.client.contacts=[];}
 
            $scope.client.contacts.push($scope.contact);
@@ -272,8 +388,12 @@ $scope.showPopup = function() {
               if(index != -1){
                   $scope.client.contacts.splice(index,1);
                   //put operation
-                  console.log($scope.id);
-                  clientsService.update({id:$scope.client._id},$scope.client);
+                  clientsService.update({id:$scope.client._id},$scope.client).$promise.then(
+                    function(response){
+                        $scope.loadClient();
+                    },function(response){
+                            $scope.message = "Error: "+response.status + " " + response.statusText;
+                  });
               }
 
           }

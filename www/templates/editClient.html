@@ -1,0 +1,41 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-balanced">
+    <h1 class="title">Edit Client {{client.company_name}}</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeEditClient()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form ng-submit="editClient()">
+      <div class="list">
+        <label class="item item-input">
+          <span class="input-label"> Company Name</span>
+          <input type="text" ng-model="client.company_name" required>
+        </label>
+         <label class="item item-input">
+          <span class="input-label">  <i class="icon ion-ios-location-outline"> Direction</i></span>
+          <input type="text" ng-model="client.direction"required>
+        </label>
+        <label class="item item-input">
+         <span class="input-label">  <i class="icon ion-ios-location-outline"> City</i></span>
+         <input type="text" ng-model="client.city"required>
+       </label>
+       <label class="item item-input">
+        <span class="input-label">  <i class="icon ion-card"> Country</i></span>
+        <input type="text" ng-model="client.country"required>
+      </label>
+         <label class="item item-input">
+          <span class="input-label">  <i class="icon ion-ios-telephone-outline"> Phone</i></span>
+          <input type="number" ng-model="client.phone" required>
+        </label>
+       <label class="item item-input">
+          <span class="input-label"> <i class="icon ion-email"> Email</i></span>
+          <input type="email" ng-model="client.email" required>
+        </label>
+        <label class="item">
+          <button class="button button-block button-balanced" type="submit" ng-disabled="editRespForm.$invalid">Create</button>
+        </label>
+      </div>
+    </form>
+  </ion-content>
+</ion-modal-view>
