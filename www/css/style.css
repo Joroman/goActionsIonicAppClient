@@ -1,1 +1,7 @@
-/* Empty. Add your own CSS if you like */
+/* Empty. Add your own CSS if you like  positive 4a87ee    balance 66cc33*/
+.button-float:hover{
+  -webkit-transform: translate3d(0, -1px, 0)  !important;
+  transform: translate3d(0, -1px, 0) !important;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4) !important;
+    background: darken($assertive, 10%) !important;
+}
