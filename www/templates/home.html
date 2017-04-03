@@ -1,7 +1,5 @@
 <ion-view view-title="Home">
   <ion-content>
-
-
     <div class="list card">
       <div class="row">
         <div class="col">
@@ -9,29 +7,29 @@
         </div>
       </div>
 
-      <div class="card">
-        <a href="#" class="item item-icon-left" style="background-color:#4a87ee">
-          <div class='row'>
-            <div class="col">
-                <i style="color:#fff" class="icon ion-compose"></i>
-                    <h2 style="color:#fff">  Definition</h2>
+        <div class="card">
+          <a  href="#/app/define" class="item item-icon-left" style="background-color:#4a87ee">
+            <div class='row'>
+              <div class="col">
+                  <i style="color:#fff" class="icon ion-compose"></i>
+                  <h2 style="color:#fff">{{actionsSort.labelDefine}}</h2>
+              </div>
+              <div class="col">
+                  <h2 style="color:#fff;text-align:right">  {{actionsSort.define.length}} </h2>
+              </div>
             </div>
-            <div class="col">
-                <h2 style="color:#fff;text-align:right">  19 </h2>
-            </div>
-          </div>
-        </a>
-      </div>
+          </a>
+        </div>
 
       <div class="card">
-        <a href="#" class="item item-icon-left" style="background-color:#4a87ee">
+        <a href="#/app/define" class="item item-icon-left" style="background-color:#4a87ee">
           <div class='row'>
             <div class="col">
               <i style="color:#fff" class="icon ion-chatbubbles"></i>
-              <h2 style="color:#fff">Prospection</h2>
+              <h2 style="color:#fff">{{actionsSort.labelProspection}}</h2>
             </div>
             <div class="col">
-                <h2 style="color:#fff;text-align:right">  12 </h2>
+                <h2 style="color:#fff;text-align:right">  {{actionsSort.prospect.length}}  </h2>
             </div>
           </div>
         </a>
@@ -42,10 +40,10 @@
             <div class='row'>
               <div class="col">
                 <i style="color:#fff" class="icon ion-pull-request"></i>
-                <h2 style="color:#fff"> Request </h2>
+                <h2 style="color:#fff"> {{actionsSort.labelRequest}} </h2>
               </div>
               <div class="col">
-                  <h2 style="color:#fff;text-align:right">  10 </h2>
+                  <h2 style="color:#fff;text-align:right">{{actionsSort.request.length}}  </h2>
               </div>
             </div>
           </a>
@@ -56,14 +54,15 @@
           <div class='row'>
             <div class="col">
               <i style="color:#fff" class="icon ion-paper-airplane"></i>
-              <h2 style="color:#fff"> Response </h2>
+              <h2 style="color:#fff"> {{actionsSort.labelResponse}} </h2>
             </div>
             <div class="col">
-                <h2 style="color:#fff;text-align:right">9</h2>
+                <h2 style="color:#fff;text-align:right">{{actionsSort.response.length}} </h2>
             </div>
           </div>
         </a>
     </div>
+
 </div>
 
 <div class="row">

@@ -114,12 +114,12 @@ function($scope, $ionicActionSheet, $timeout, clientsService, $state, $ionicModa
 
   };
 
-$scope.loadClients();
+  $scope.loadClients();
 
- $scope.show = function(client) {
-   $scope.client=client;
-   $scope.client.phone=JSON.parse(client.phone);
-// Show the action sheet
+   $scope.show = function(client) {
+     $scope.client=client;
+     $scope.client.phone=JSON.parse(client.phone);
+     // Show the action sheet
   var hideSheet= $ionicActionSheet.show({
       buttons: [
         { text: '<i class="icon ion-android-contacts"></i> Show Client Contacts' },
@@ -211,24 +211,24 @@ $scope.loadClients();
 
    /*******************DELETE CLIENT**********************************/
    /**************************$ionicPopup************************/
- // Triggered on a button click, or some other target
- $scope.showPopup = function() {
-   // An elaborate, custom popup
-   var myPopup = $ionicPopup.show({
-     template: 'Are you sure you want to delete the Client and all the contacts?',
-     title: 'Delete Client',
-     scope: $scope,
-     buttons: [
-       { text: 'Cancel' },
-       {
-         text: '<b>Delete</b>',
-         type: 'button-assertive',
-         onTap: function(e) {
-           $scope.deleteClient();
+   // Triggered on a button click, or some other target
+   $scope.showPopup = function() {
+     // An elaborate, custom popup
+     var myPopup = $ionicPopup.show({
+       template: 'Are you sure you want to delete the Client and all the contacts?',
+       title: 'Delete Client',
+       scope: $scope,
+       buttons: [
+         { text: 'Cancel' },
+         {
+           text: '<b>Delete</b>',
+           type: 'button-assertive',
+           onTap: function(e) {
+             $scope.deleteClient();
+           }
          }
-       }
-     ]
-   });
+       ]
+     });
 
    myPopup.then(function(res) {
      console.log('Tapped!', res);
@@ -352,8 +352,8 @@ function($scope,$stateParams,clientsService,$ionicModal,$ionicActionSheet,$ionic
        };
 
   /**************************$ionicPopup************************/
-// Triggered on a button click, or some other target
-$scope.showPopup = function() {
+  // Triggered on a button click, or some other target
+  $scope.showPopup = function() {
   // An elaborate, custom popup
   var myPopup = $ionicPopup.show({
     template: 'Are you sure you want to delete the contact?',
@@ -399,6 +399,21 @@ $scope.showPopup = function() {
           }
 
       };
+
+}])
+
+.controller('ActionsController',['$scope','actionsService','actionsSortService',function($scope,actionsService,actionsSortService) {
+
+  actionsService.query()
+    .$promise.then(
+          function(response){
+            $scope.actions = response;
+            $scope.actionsSort = actionsSortService.sortActions($scope.actions);
+        },function (response) {
+             $scope.message = "Error: "+response.status + " " + response.statusText;
+    });
+
+    
 
 }])
 ;

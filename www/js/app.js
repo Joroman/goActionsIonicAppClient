@@ -25,21 +25,21 @@ angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services'])
     $ionicLoading.show({
         template: '<ion-spinner></ion-spinner> Loading ...'
     })
-});
+  });
 
-$rootScope.$on('loading:hide', function () {
-    $ionicLoading.hide();
-});
+  $rootScope.$on('loading:hide', function () {
+      $ionicLoading.hide();
+  });
 
-$rootScope.$on('$stateChangeStart', function () {
-    console.log('Loading ...');
-    $rootScope.$broadcast('loading:show');
-});
+  $rootScope.$on('$stateChangeStart', function () {
+      console.log('Loading ...');
+      $rootScope.$broadcast('loading:show');
+  });
 
-$rootScope.$on('$stateChangeSuccess', function () {
-    console.log('done');
-    $rootScope.$broadcast('loading:hide');
-});
+  $rootScope.$on('$stateChangeSuccess', function () {
+      console.log('done');
+      $rootScope.$broadcast('loading:hide');
+  });
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -58,11 +58,20 @@ $rootScope.$on('$stateChangeSuccess', function () {
     url: '/home',
     views: {
       'mainContent': {
-        templateUrl: 'templates/home.html'
+        templateUrl: 'templates/home.html',
+        controller:   'ActionsController'
       }
     }
   })
-
+  .state('app.define',{
+    url:'/define',
+    views:{
+      'mainContent':{
+        templateUrl:'templates/defineActions.html',
+        controller: 'ActionsController'
+      }
+    }
+  })
   .state('app.getstartaction', {
       url: '/getStartAction',
       views: {

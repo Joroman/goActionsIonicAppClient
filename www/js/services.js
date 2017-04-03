@@ -2,6 +2,57 @@ angular.module('myApp.services',['ngResource'])
 
 .constant("baseURL","http://192.168.1.130:3000/")
 
+.factory('actionsService',['$resource','baseURL',function($resource,baseURL){
+    return $resource(baseURL+'actions/:id',null,
+                        {'update':{method:'PUT'}
+                    });
+}])
+
+.factory('actionsSortService',function(){
+  var loadLabels = function (arr){
+        arr.labelDefine       ="Define";
+        arr.labelProspection  ="Prospect";
+        arr.labelRequest      ="Request";
+        arr.labelResponse     ="Response";
+    return arr;
+  };
+
+    return {
+      sortActions: function(actions){
+        var arr={};
+        var define=[];
+        var prospect=[];
+        var request=[];
+        var response=[];
+        for (var x=0; x < actions.length; x++){
+            //defined actions
+              if (actions[x].feedback==null && actions[x].response==null && actions[x].request==null && actions[x].prospection==null){
+                              define.push(actions[x]);
+                      }
+              // PORSPECTION ACTIONS
+              if (actions[x].feedback==null && actions[x].response==null && actions[x].request==null && actions[x].prospection!=null){
+                              prospect.push(actions[x]);
+                      }
+              // REQUEST ACTION
+              if (actions[x].feedback==null && actions[x].response==null && actions[x].request!=null && actions[x].prospection!=null){
+                                request.push(actions[x]);
+                      }
+              //RESPONSE ACTION
+              if (actions[x].feedback==null && actions[x].response!=null && actions[x].request!=null && actions[x].prospection!=null){
+                            response.push(actions[x]);
+                      }
+        }
+        arr.define=define;
+        arr.prospect=prospect;
+        arr.request=request;
+        arr.response=response;
+        arr= loadLabels(arr);
+        return arr;
+      }
+    };
+
+})
+
 .factory('clientsService',['$resource','baseURL',function($resource,baseURL){
     return $resource(baseURL+"clients/:id",null, {
          'update':{method:'PUT'}
