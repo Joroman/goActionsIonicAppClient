@@ -402,18 +402,41 @@ function($scope,$stateParams,clientsService,$ionicModal,$ionicActionSheet,$ionic
 
 }])
 
-.controller('ActionsController',['$scope','actionsService','actionsSortService',function($scope,actionsService,actionsSortService) {
+.controller('ActionsController',['$scope','actionsService','actionsSortService','$state',function($scope,actionsService,actionsSortService,$state) {
 
   actionsService.query()
     .$promise.then(
           function(response){
             $scope.actions = response;
-            $scope.actionsSort = actionsSortService.sortActions($scope.actions);
+            $scope.actionsSort = actionsSortService.sortActions(response);
         },function (response) {
              $scope.message = "Error: "+response.status + " " + response.statusText;
     });
 
-    
+    $scope.goActionDetail = function(action){
+      //go to contacts
+      $state.go('app.actionDetail',{id:action._id});
+    };
+
+
+
+}])
+
+.controller('ActionDetailController',['$scope','$stateParams','actionsService',function($scope,$stateParams,actionsService){
+
+    var loadAction = function(){
+      if($stateParams!= null){
+        actionsService.get({id:$stateParams.id}).$promise.then(
+            function(response){
+              $scope.action= response;
+            },function(response){
+               $scope.message = "Error: "+response.status + " " + response.statusText;
+          });
+      }
+
+    };
+
+    loadAction();
 
 }])
 ;

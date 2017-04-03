@@ -1,0 +1,33 @@
+<ion-view>
+  <ion-nav-title>
+    <h4 style="color:#fff">List {{actionsSort.labelResponse}} Actions</h4>
+   </ion-nav-title>
+  <ion-content>
+    <div class="list">
+      <div ng-repeat="res in actionsSort.response">
+        <a class="item item-avatar" ng-click="goActionDetail(res)">
+          <img src="img/response.png">
+          <div class="row">
+            <div class="col">
+              <p>  <i class="icon ion-android-time"></i> Offer Send: {{res.response.date_send  | date:'yyyy-MM-dd'}}</p>
+
+              <p><i class="icon ion-ios-briefcase"></i> Client: {{res.client_name}}</p>
+
+
+              <p><i class="icon ion-clipboard"></i> Offer Name: {{res.response.offer_name  | date:'yyyy-MM-dd'}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p><i class="icon ion-pricetag"></i> Budget: {{res.response.offer_budget}}€</p>
+            </div>
+            <div class="col">
+            <p>  Margin: {{res.response.offer_margin}}%</p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </ion-content>
+</ion-view>

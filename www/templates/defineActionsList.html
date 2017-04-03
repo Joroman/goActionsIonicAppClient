@@ -2,26 +2,23 @@
   <ion-nav-title>
     <h4 style="color:#fff">List {{actionsSort.labelDefine}} Actions</h4>
    </ion-nav-title>
-  <ion-nav-buttons side="right">
-   <button class="button button-clear" ng-click=""><i class="icon ion-compose" ></i></button>
- </ion-nav-buttons>
   <ion-content>
     <div class="list">
       <div ng-repeat="define in actionsSort.define">
-        <a class="item item-avatar" ng-click="">
+        <a class="item item-avatar" ng-click="goActionDetail(define)">
           <img src="img/define.png">
           <div class="row">
             <div class="col">
-                <h2><i class="icon ion-android-time"></i> Start Date: <h3>{{define.start_date  | date:'yyyy-MM-dd'}}</h3></h2>
+                <h4><i class="icon ion-android-time"></i> Start Date: <h4>{{define.start_date  | date:'yyyy-MM-dd'}}</h4></h4>
             </div>
             <div class="col">
-              <h2><i class="icon ion-ios-briefcase"></i> Client: <h3>{{define.client_name}}</h3></h2>
+              <h4><i class="icon ion-ios-briefcase"></i> Client: <h4>{{define.client_name}}</h4></h4>
             </div>
           </div>
           <div class="row">
             <div class="col">
-              <h2><i class="icon ion-android-create"></i> Description </h2>
-              <h3>{{define.description}}</h3>
+              <h4><i class="icon ion-android-create"></i> Description: </h4>
+              <h4>{{define.description}}</h4>
             </div>
           </div>
         </a>

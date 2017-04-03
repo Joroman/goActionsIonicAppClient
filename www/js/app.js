@@ -63,12 +63,48 @@ angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services'])
       }
     }
   })
-  .state('app.define',{
-    url:'/define',
+  .state('app.defineList',{
+    url:'/defineList',
     views:{
       'mainContent':{
-        templateUrl:'templates/defineActions.html',
+        templateUrl:'templates/defineActionsList.html',
         controller: 'ActionsController'
+      }
+    }
+  })
+  .state('app.prospectList',{
+    url:'/prospectList',
+    views:{
+      'mainContent':{
+        templateUrl:'templates/prospectActionsList.html',
+        controller:'ActionsController'
+      }
+    }
+  })
+  .state('app.requestList',{
+    url:'/requestList',
+    views:{
+      'mainContent':{
+        templateUrl:'templates/requestActionsList.html',
+        controller:'ActionsController'
+      }
+    }
+  })
+  .state('app.responseList',{
+    url:'/responseList',
+    views:{
+      'mainContent':{
+        templateUrl:'templates/responseActionsList.html',
+        controller:'ActionsController'
+      }
+    }
+  })
+  .state('app.actionDetail',{
+    url:'/actionDetail/:id',
+    views:{
+      'mainContent':{
+        templateUrl:'templates/actionDetail.html',
+        controller:'ActionDetailController'
       }
     }
   })

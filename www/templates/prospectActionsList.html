@@ -1,0 +1,31 @@
+<ion-view>
+  <ion-nav-title>
+    <h4 style="color:#fff">List {{actionsSort.labelProspection}} Actions</h4>
+   </ion-nav-title>
+  <ion-content>
+    <div class="list">
+      <div ng-repeat="pros in actionsSort.prospect">
+        <a class="item item-avatar" ng-click="goActionDetail(pros)">
+          <img src="img/prospect.png">
+          <div class="row">
+            <div class="col">
+                <h4><i class="icon ion-android-time"></i> Start Date: <h4>{{pros.start_date  | date:'yyyy-MM-dd'}}</h4></h4>
+            </div>
+            <div class="col">
+              <h4><i class="icon ion-ios-briefcase"></i> Client: <h4>{{pros.client_name}}</h4></h4>
+            </div>
+            <div class='col'>
+                <h4><i class="icon ion-android-time"></i> Meeting Date: <h4>{{pros.prospection.meeting_date  | date:'yyyy-MM-dd'}}</h4></h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <h4><i class="icon ion-person"></i> Contact: {{pros.prospection.contact}}</h4>
+            </div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </ion-content>
+</ion-view>
