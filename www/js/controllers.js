@@ -402,23 +402,88 @@ function($scope,$stateParams,clientsService,$ionicModal,$ionicActionSheet,$ionic
 
 }])
 
-.controller('ActionsController',['$scope','actionsService','actionsSortService','$state',function($scope,actionsService,actionsSortService,$state) {
+.controller('ActionsController',['$scope','actionsService','actionsSortService','$state','$ionicModal','clientsService','$ionicPopup',
+function($scope,actionsService,actionsSortService,$state,$ionicModal,clientsService,$ionicPopup) {
 
-  actionsService.query()
-    .$promise.then(
-          function(response){
-            $scope.actions = response;
-            $scope.actionsSort = actionsSortService.sortActions(response);
-        },function (response) {
-             $scope.message = "Error: "+response.status + " " + response.statusText;
-    });
+
+  var loadActions = function(){
+    actionsService.query()
+      .$promise.then(
+            function(response){
+              $scope.actions = response;
+              $scope.actionsSort = actionsSortService.sortActions(response);
+          },function (response) {
+               $scope.message = "Error: "+response.status + " " + response.statusText;
+      });
+  };
+
+  var loadClients = function(){
+      clientsService.query()
+      .$promise.then(
+        function(response){
+          $scope.clients=response;
+        },function(response){
+           $scope.message = "Error: "+response.status + " " + response.statusText;
+        });
+  };
+
+  $scope.selectClient = function(client){
+    $scope.action._client = client._id;
+    $scope.action.client_name = client.company_name;
+    $scope.myPopup.close();
+  };
+
+    loadActions();
+
 
     $scope.goActionDetail = function(action){
       //go to contacts
       $state.go('app.actionDetail',{id:action._id});
     };
 
+      $ionicModal.fromTemplateUrl('templates/getStartActionModal.html', {
+       scope: $scope,
+       animation: 'slide-in-up'
+     }).then(function(modal) {
+       $scope.modal = modal;
+     });
+     $scope.openModal = function() {
+       $scope.action={name:"",_client:"",description:"",client_name:"",start_date:"",end_date:""};
+       $scope.modal.show();
+     };
+     $scope.closeModal = function() {
+       $scope.modal.hide();
+     };
 
+
+/*******************CHOOSE CLIENT**********************************/
+/**************************$ionicPopup************************/
+// Triggered on a button click, or some other target
+$scope.showPopup = function() {
+  loadClients();
+  $scope.myPopup = $ionicPopup.show({
+    templateUrl: 'templates/popUp.html',
+        title: 'Select Client',
+        scope: $scope,
+        buttons: [{
+          text: 'Cancel',
+          type: 'button-assertive',
+          onTap: function() {
+            return true;
+          }
+        }]
+  });
+};
+
+
+
+/**********************POST ACTION***************************/
+  $scope.createAction = function(){
+       actionsService.save($scope.action);
+       $scope.modal.hide();
+       loadActions();
+
+     };
 
 }])
 
