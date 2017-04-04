@@ -456,34 +456,32 @@ function($scope,actionsService,actionsSortService,$state,$ionicModal,clientsServ
      };
 
 
-/*******************CHOOSE CLIENT**********************************/
-/**************************$ionicPopup************************/
-// Triggered on a button click, or some other target
-$scope.showPopup = function() {
-  loadClients();
-  $scope.myPopup = $ionicPopup.show({
-    templateUrl: 'templates/popUp.html',
-        title: 'Select Client',
-        scope: $scope,
-        buttons: [{
-          text: 'Cancel',
-          type: 'button-assertive',
-          onTap: function() {
-            return true;
-          }
-        }]
-  });
-};
+  /*******************CHOOSE CLIENT**********************************/
+  /**************************$ionicPopup************************/
+  // Triggered on a button click, or some other target
+  $scope.showPopup = function() {
+    loadClients();
+    $scope.myPopup = $ionicPopup.show({
+      templateUrl: 'templates/popUp.html',
+          title: 'Select Client',
+          scope: $scope,
+          buttons: [{
+            text: 'Cancel',
+            type: 'button-assertive',
+            onTap: function() {
+              return true;
+            }
+          }]
+    });
+  };
 
+  /**********************POST ACTION***************************/
+    $scope.createAction = function(){
+         actionsService.save($scope.action);
+         $scope.modal.hide();
+         loadActions();
 
-
-/**********************POST ACTION***************************/
-  $scope.createAction = function(){
-       actionsService.save($scope.action);
-       $scope.modal.hide();
-       loadActions();
-
-     };
+       };
 
 }])
 
@@ -494,11 +492,34 @@ $scope.showPopup = function() {
         actionsService.get({id:$stateParams.id}).$promise.then(
             function(response){
               $scope.action= response;
+              $scope.actionState=getActionState(response);
             },function(response){
                $scope.message = "Error: "+response.status + " " + response.statusText;
           });
       }
 
+    };
+
+    var getActionState = function (action) {
+      var actionState = {define:false,prospect:false,request:false,response:false};
+       // ACTIVE ACTIONS DEFINE ACTIONS
+        if (action.feedback==null && action.response==null && action.request==null && action.prospection==null){
+          actionState.define=true;
+        }
+       // ACTIVE ACTIONS PORSPECTION ACTIONS
+       if (action.feedback==null && action.response==null && action.request==null && action.prospection!=null){
+         actionState.prospect=true;
+        }
+       // ACTIVE ACTIONS REQUEST ACTION
+       if (action.feedback==null && action.response==null && action.request!=null && action.prospection!=null){
+         actionState.request=true;
+        }
+      //ACTIVE ACTIONS RESPONSE ACTION
+      if (action.feedback==null && action.response!=null && action.request!=null && action.prospection!=null){
+          actionState.response=true;
+       }
+
+       return actionState;
     };
 
     loadAction();

@@ -1,5 +1,292 @@
 <ion-view>
   <ion-content>
-hola
+
+    <!--DEFINE ACTION-->
+    <div ng-if ="actionState.define">
+      <div class="card">
+          <div class="item item-divider" style="background-color:#4a87ee;text-align: center">
+              <h2 style="color:#fff">Define</h2>
+          </div>
+          <div class="item item-text-wrap">
+              <p>Action Name: {{action.name}}</p>
+          </div>
+          <div class="item item-text-wrap">
+            <p><i class="icon ion-android-contacts"> Client: </i>
+            {{action.client_name}}</p>
+          </div>
+          <div class="item item-text-wrap">
+            <p><i class="fa fa-pencil" aria-hidden="true"> Description: </i>
+            {{action.description}}</p>
+          </div>
+          <div class="item item-text-wrap">
+              <p><i class="fa fa-clock-o" aria-hidden="true"> Start Date: </i>
+            {{action.start_date  | date:'yyyy-MM-dd'}}</p>
+          </div>
+
+          <div class="item item-text-wrap">
+             <p><i class="fa fa-hourglass-end" aria-hidden="true"> End Date: </i>
+             {{action.end_date  | date:'yyyy-MM-dd'}}</p>
+          </div>
+      </div>
+    </div>
+
+  <!--PROSPECT ACTION-->
+  <div ng-if ="actionState.prospect">
+    <div class="card">
+      <div class="item item-divider" style="background-color:#4a87ee;text-align: center">
+          <h2 style="color:#fff">Define</h2>
+      </div>
+      <div class="item item-text-wrap">
+          <p>Action Name: {{action.name}}</p>
+      </div>
+      <div class="item item-text-wrap">
+        <p><i class="icon ion-android-contacts"> Client: </i>
+        {{action.client_name}}</p>
+      </div>
+      <div class="item item-text-wrap">
+        <p><i class="fa fa-pencil" aria-hidden="true"> Description: </i>
+        {{action.description}}</p>
+      </div>
+      <div class="item item-text-wrap">
+          <p><i class="fa fa-clock-o" aria-hidden="true"> Start Date: </i>
+        {{action.start_date  | date:'yyyy-MM-dd'}}</p>
+      </div>
+
+      <div class="item item-text-wrap">
+         <p><i class="fa fa-hourglass-end" aria-hidden="true"> End Date: </i>
+         {{action.end_date  | date:'yyyy-MM-dd'}}</p>
+      </div>
+    </div>
+
+  <div class="card">
+        <!--divider-->
+        <div class="item item-divider" style="background-color:#4a87ee;text-align: center">
+            <h2 style="color:#fff">Prospect</h2>
+        </div>
+
+        <div class="item item-text-wrap">
+            <p><i class="icon ion-person" aria-hidden="true"> Client Contact:</i></p>
+            <p>{{action.prospection.contact}}</p>
+        </div>
+
+        <div class="item item-text-wrap">
+           <p><i class="icon ion-ios-football" aria-hidden="true"> Objective: </i>
+            {{action.prospection.objective}} </p>
+        </div>
+        <div class="item item-text-wrap">
+           <p><i class="icon ion-calendar" aria-hidden="true"> Meeting Date: </i>
+           {{action.prospection.meeting_date | date:'yyyy-MM-dd'}}</p>
+        </div>
+
+    </div>
+  </div>
+
+
+  <!--REQUEST ACTION-->
+  <div ng-if ="actionState.request">
+    <div class="card">
+      <div class="item item-divider" style="background-color:#4a87ee;text-align: center">
+          <h2 style="color:#fff">Define</h2>
+      </div>
+      <div class="item item-text-wrap">
+          <p>Action Name: {{action.name}}</p>
+      </div>
+      <div class="item item-text-wrap">
+        <p><i class="icon ion-android-contacts"> Client: </i>
+        {{action.client_name}}</p>
+      </div>
+      <div class="item item-text-wrap">
+        <p><i class="fa fa-pencil" aria-hidden="true"> Description: </i>
+        {{action.description}}</p>
+      </div>
+      <div class="item item-text-wrap">
+          <p><i class="fa fa-clock-o" aria-hidden="true"> Start Date: </i>
+        {{action.start_date  | date:'yyyy-MM-dd'}}</p>
+      </div>
+
+      <div class="item item-text-wrap">
+         <p><i class="fa fa-hourglass-end" aria-hidden="true"> End Date: </i>
+         {{action.end_date  | date:'yyyy-MM-dd'}}</p>
+      </div>
+</div>
+
+  <div class="card">
+        <!--divider-->
+        <div class="item item-divider" style="background-color:#4a87ee;text-align: center">
+            <h2 style="color:#fff">Prospect</h2>
+        </div>
+
+        <div class="item item-text-wrap">
+            <p><i class="icon ion-person" aria-hidden="true"> Client Contact:</i></p>
+            <p>{{action.prospection.contact}}</p>
+        </div>
+
+        <div class="item item-text-wrap">
+           <p><i class="icon ion-ios-football" aria-hidden="true"> Objective: </i>
+            {{action.prospection.objective}} </p>
+        </div>
+        <div class="item item-text-wrap">
+           <p><i class="icon ion-calendar" aria-hidden="true"> Meeting Date: </i>
+           {{action.prospection.meeting_date | date:'yyyy-MM-dd'}}</p>
+        </div>
+
+    </div>
+
+    <div class="card">
+          <!--divider-->
+          <div class="item item-divider" style="background-color:#4a87ee;text-align: center">
+              <h2 style="color:#fff">Request</h2>
+          </div>
+
+          <div class="item item-text-wrap">
+              <p><i class="icon ion-pull-request" aria-hidden="true"> Client Request:</i>
+            {{action.request.service_product}}</p>
+          </div>
+
+          <div class="item item-text-wrap">
+              <p><i class="icon ion-clipboard" aria-hidden="true"> Estimate resources for de project:</i>
+            {{action.request.resources}}</p>
+          </div>
+
+          <div class="item item-text-wrap">
+             <p><i class="icon ion-cash" aria-hidden="true"> Estimate Budget: </i>
+              {{action.request.estimate_budget}} €</p>
+          </div>
+          <div class="item item-text-wrap">
+             <p><i class="icon ion-calendar" aria-hidden="true"> Respomse Date: </i>
+             {{action.request.response_date | date:'yyyy-MM-dd'}}</p>
+          </div>
+
+      </div>
+  </div>
+  <!--RESPONSE ACTION-->
+  <div ng-if ="actionState.response">
+    <div class="card">
+      <div class="item item-divider" style="background-color:#4a87ee;text-align: center">
+          <h2 style="color:#fff">Define</h2>
+      </div>
+      <div class="item item-text-wrap">
+          <p>Action Name: {{action.name}}</p>
+      </div>
+      <div class="item item-text-wrap">
+        <p><i class="icon ion-android-contacts"> Client: </i>
+        {{action.client_name}}</p>
+      </div>
+      <div class="item item-text-wrap">
+        <p><i class="fa fa-pencil" aria-hidden="true"> Description: </i>
+        {{action.description}}</p>
+      </div>
+      <div class="item item-text-wrap">
+          <p><i class="fa fa-clock-o" aria-hidden="true"> Start Date: </i>
+        {{action.start_date  | date:'yyyy-MM-dd'}}</p>
+      </div>
+
+      <div class="item item-text-wrap">
+         <p><i class="fa fa-hourglass-end" aria-hidden="true"> End Date: </i>
+         {{action.end_date  | date:'yyyy-MM-dd'}}</p>
+      </div>
+</div>
+
+  <div class="card">
+        <!--divider-->
+        <div class="item item-divider" style="background-color:#4a87ee;text-align: center">
+            <h2 style="color:#fff">Prospect</h2>
+        </div>
+
+        <div class="item item-text-wrap">
+            <p><i class="icon ion-person" aria-hidden="true"> Client Contact:</i></p>
+            <p>{{action.prospection.contact}}</p>
+        </div>
+
+        <div class="item item-text-wrap">
+           <p><i class="icon ion-ios-football" aria-hidden="true"> Objective: </i>
+            {{action.prospection.objective}} </p>
+        </div>
+        <div class="item item-text-wrap">
+           <p><i class="icon ion-calendar" aria-hidden="true"> Meeting Date: </i>
+           {{action.prospection.meeting_date | date:'yyyy-MM-dd'}}</p>
+        </div>
+
+    </div>
+
+    <div class="card">
+          <!--divider-->
+          <div class="item item-divider" style="background-color:#4a87ee;text-align: center">
+              <h2 style="color:#fff">Request</h2>
+          </div>
+
+          <div class="item item-text-wrap">
+              <p><i class="icon ion-pull-request" aria-hidden="true"> Client Request:</i>
+            {{action.request.service_product}}</p>
+          </div>
+
+          <div class="item item-text-wrap">
+              <p><i class="icon ion-clipboard" aria-hidden="true"> Estimate resources for de project:</i>
+            {{action.request.resources}}</p>
+          </div>
+
+          <div class="item item-text-wrap">
+             <p><i class="icon ion-cash" aria-hidden="true"> Estimate Budget: </i>
+              {{action.request.estimate_budget}} €</p>
+          </div>
+          <div class="item item-text-wrap">
+             <p><i class="icon ion-calendar" aria-hidden="true"> Respomse Date: </i>
+             {{action.request.response_date | date:'yyyy-MM-dd'}}</p>
+          </div>
+
+      </div>
+
+      <div class="card">
+            <!--divider-->
+            <div class="item item-divider" style="background-color:#4a87ee;text-align: center">
+                <h2 style="color:#fff">Response</h2>
+            </div>
+
+            <div class="item item-text-wrap">
+                <p><i class="icon ion-ios-folder" aria-hidden="true"> Offer Name:</i>
+              {{action.response.offer_name}}</p>
+            </div>
+
+            <div class="item item-text-wrap">
+               <p><i class="icon ion-cash" aria-hidden="true"> Offer Budget: </i>
+                {{action.response.offer_budget}} €</p>
+            </div>
+            <div class="item item-text-wrap">
+               <p><i class="icon ion-calculator" aria-hidden="true"> Offer Margin: </i>
+                {{action.response.offer_margin}} €</p>
+            </div>
+            <div class="item item-text-wrap">
+               <p><i class="icon ion-calendar" aria-hidden="true"> Date Send:  </i>
+               {{action.response.date_send | date:'yyyy-MM-dd'}}</p>
+            </div>
+
+        </div>
+  </div>
+
+
+
+
+
+
+<!--
+  <div class="tabs tabs-icon-top tabs-positive">
+    <a class="tab-item">
+      <i class="icon ion-edit"></i>
+      Define
+    </a>
+    <a class="tab-item">
+      <i class="icon ion-chatbubbles"></i>
+      Prospect
+    </a>
+    <a class="tab-item">
+      <i class="icon ion-pull-request"></i>
+      Request
+    </a>
+    <a class="tab-item">
+      <i class="icon ion-paper-airplane"></i>
+      Response
+    </a>
+  </div>
+-->
   </ion-content>
 </ion-view>
