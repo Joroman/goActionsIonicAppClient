@@ -1,0 +1,29 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-balanced">
+    <h1 class="title">New Phase Action Modal</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeNewModal()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form ng-submit="createNewPhase()">
+      <div class="list">
+        <label class="item item-input">
+            <span class="input-label"><i class="icon ion-ios-football" aria-hidden="true"> Prospection Objective </i></span>
+            <input type="text" ng-model="action.prospection.objective" required>
+        </label>
+         <label class="item item-input">
+            <i class="icon ion-person"></i><button class="button button-light" ng-click="showPopup()">Contact <i class="fa fa-search" aria-hidden="true"></i></button>
+            <input type="text" ng-model="action.prospection.contact" required>
+        </label>
+         <label class="item item-input">
+            <span class="input-label">  <i class="icon ion-calendar" aria-hidden="true"> Meeting Date</i></span>
+            <input type="date" ng-model="action.prospection.meeting_date" required>
+        </label>
+        <label class="item">
+          <button class="button button-block button-balanced" type="submit" ng-disabled="editRespForm.$invalid">Create Action</button>
+        </label>
+      </div>
+    </form>
+  </ion-content>
+</ion-modal-view>

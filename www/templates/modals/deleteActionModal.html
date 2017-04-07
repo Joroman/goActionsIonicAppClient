@@ -1,0 +1,23 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-assertive">
+    <h1 class="title">Delete Action</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeDeleteModal()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form ng-submit="closeAction()">
+      <div class="list">
+        <label class="item item-input">
+          <h2 style="text-align:center">Feedback</h2>
+        </label>
+        <label class="item item-input">
+        <textarea placeholder="Enter the reason why you close the action " ng-model="action.feedback.description" required></textarea>
+        </label>
+        <label class="item">
+          <button class="button button-block button-assertive" type="submit" ng-disabled="editRespForm.$invalid">Close Action</button>
+        </label>
+      </div>
+    </form>
+  </ion-content>
+</ion-modal-view>

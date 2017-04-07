@@ -9,6 +9,7 @@ angular.module('myApp.services',['ngResource'])
 }])
 
 .factory('actionsSortService',function(){
+
   var loadLabels = function (arr){
         arr.labelDefine       ="Define";
         arr.labelProspection  ="Prospect";

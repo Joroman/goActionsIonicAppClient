@@ -4,9 +4,10 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
+
 angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services', 'ion-floating-menu'])
 
-.run(function($ionicPlatform, $rootScope, $ionicLoading) {
+.run(function($ionicPlatform, $rootScope, $ionicLoading, $timeout) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -19,27 +20,30 @@ angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services', 'ion-flo
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+      $timeout(function(){
+                $cordovaSplashscreen.hide();
+      },2000);
   });
 
-  $rootScope.$on('loading:show', function () {
-    $ionicLoading.show({
-        template: '<ion-spinner></ion-spinner> Loading ...'
-    })
-  });
+    $rootScope.$on('loading:show', function () {
+        $ionicLoading.show({
+            template: '<ion-spinner></ion-spinner> Loading ...'
+        })
+    });
 
-  $rootScope.$on('loading:hide', function () {
-      $ionicLoading.hide();
-  });
+    $rootScope.$on('loading:hide', function () {
+        $ionicLoading.hide();
+    });
 
-  $rootScope.$on('$stateChangeStart', function () {
-      console.log('Loading ...');
-      $rootScope.$broadcast('loading:show');
-  });
+    $rootScope.$on('$stateChangeStart', function () {
+        console.log('Loading ...');
+        $rootScope.$broadcast('loading:show');
+    });
 
-  $rootScope.$on('$stateChangeSuccess', function () {
-      console.log('done');
-      $rootScope.$broadcast('loading:hide');
-  });
+    $rootScope.$on('$stateChangeSuccess', function () {
+        console.log('done');
+        $rootScope.$broadcast('loading:hide');
+    });
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -68,7 +72,7 @@ angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services', 'ion-flo
     views:{
       'mainContent':{
         templateUrl:'templates/defineActionsList.html',
-        controller: 'ActionsController'
+        controller: 'ActionListController'
       }
     }
   })
@@ -77,7 +81,7 @@ angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services', 'ion-flo
     views:{
       'mainContent':{
         templateUrl:'templates/prospectActionsList.html',
-        controller:'ActionsController'
+        controller:'ActionListController'
       }
     }
   })
@@ -86,7 +90,7 @@ angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services', 'ion-flo
     views:{
       'mainContent':{
         templateUrl:'templates/requestActionsList.html',
-        controller:'ActionsController'
+        controller:'ActionListController'
       }
     }
   })
@@ -95,7 +99,7 @@ angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services', 'ion-flo
     views:{
       'mainContent':{
         templateUrl:'templates/responseActionsList.html',
-        controller:'ActionsController'
+        controller:'ActionListController'
       }
     }
   })
@@ -108,7 +112,7 @@ angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services', 'ion-flo
       }
     }
   })
-  
+
     .state('app.closeactions', {
       url: '/closeActions',
       views: {
@@ -157,18 +161,7 @@ angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services', 'ion-flo
         }
       }
     })
-
-   .state('app.login', {
-      url: '/login',
-      views: {
-        'mainContent': {
-          templateUrl: 'templates/login.html',
-          controller: ''
-        }
-      }
-    })
-
-  ;
+;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/home');
 });
