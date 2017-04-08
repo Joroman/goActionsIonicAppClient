@@ -58,11 +58,21 @@ angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services', 'ion-flo
     controller: 'AppCtrl'
   })
 
-  .state('app.home', {
-    url: '/home',
+  .state('app.home',{
+    url:'/home',
+    views:{
+      'mainContent':{
+        templateUrl:'templates/home.html',
+        //controller:'HomeController'
+      }
+    }
+  })
+
+  .state('app.activeActions', {
+    url: '/activeActions',
     views: {
       'mainContent': {
-        templateUrl: 'templates/home.html',
+        templateUrl: 'templates/activeActions.html',
         controller:   'ActionsController'
       }
     }

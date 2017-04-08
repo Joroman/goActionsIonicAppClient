@@ -480,7 +480,7 @@ function($scope,actionsService,actionsSortService,$state,$ionicModal,clientsServ
 }])
 
 .controller('ActionListController',['$scope','actionsService','$state','actionsSortService',function($scope,actionsService,$state,actionsSortService){
-    $scope.actions=actionsService.query()
+  $scope.actions=actionsService.query()
   .$promise.then(
     function(response){
       $scope.actions = response;
@@ -488,6 +488,8 @@ function($scope,actionsService,actionsSortService,$state,$ionicModal,clientsServ
     },function (response) {
        $scope.message = "Error: "+response.status + " " + response.statusText;
     });
+
+
 
     $scope.goActionDetail = function(action){
       //go to contacts
