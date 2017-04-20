@@ -1,10 +1,13 @@
 <ion-modal-view>
+<!--MODAL EDIT DEFINE-->
+<div ng-if ="actionState.define">
   <ion-header-bar class="bar bar-energized">
-    <h1 class="title">Edit Action</h1>
-    <div class="buttons">
+    <h1 class="title">Edit Define Action</h1>
+
       <button class="button button-clear" ng-click="closeEditModal()">Close</button>
-    </div>
+
   </ion-header-bar>
+
   <ion-content>
     <form ng-submit="updateAction()">
       <div class="list">
@@ -13,14 +16,18 @@
           <input type="text" ng-model="action.name" required>
         </label>
          <label class="item item-input">
-          <i class="icon ion-android-contacts"></i><button class="button button-light"> Client <i class="fa fa-search" aria-hidden="true"></i></button>
-          <input type="text" ng-model="action.client_name" disabled>
+          <i class="icon ion-android-contacts">Client: </i>
+        <!--  <input type="text" ng-model="action.client_name" disabled>-->
+            <h2 >{{action.client_name}}</h2>
+        </label>
 
+        <label class="item item-input">
+          <h2><i class="fa fa-pencil" aria-hidden="true"> Description</i></h2>
         </label>
         <label class="item item-input">
-         <span class="input-label">  <i class="fa fa-pencil" aria-hidden="true"> Description</i></span>
-         <textarea ng-model="action.description"required></textarea>
-       </label>
+        <textarea placeholder="Describe the idea of the action" ng-model="action.description" required></textarea>
+        </label>
+
        <label class="item item-input">
         <span class="input-label">  <i class="fa fa-clock-o" aria-hidden="true"> Start Date</i></span>
         <input type="date" ng-model="action.start_date"required>
@@ -30,9 +37,54 @@
           <input type="date" ng-model="action.end_date" required>
         </label>
         <label class="item">
-          <button class="button button-block button-energized" type="submit" ng-disabled="editRespForm.$invalid">Create Action</button>
+          <button class="button button-block button-energized" type="submit" ng-disabled="editRespForm.$invalid">Edit Action</button>
         </label>
       </div>
     </form>
   </ion-content>
+</div>
+  <!--MODAL EDIT PROSPECT-->
+<div ng-if="actionState.prospect">
+    <ion-header-bar class="bar bar-energized">
+      <h1 class="title">Edit Action</h1>
+
+        <button class="button button-clear" ng-click="closeEditModal()">Close</button>
+
+    </ion-header-bar>
+
+    <ion-content>
+      <form ng-submit="updateAction()">
+        <div class="list">
+
+          <label class="item item-input">
+             <i class="icon ion-person"></i><button class="button button-light" ng-click="showPopup()"> Contact <i class="fa fa-search" aria-hidden="true"></i></button>
+             <input type="text" ng-model="action.prospection.contact" required>
+         </label>
+
+
+          <label class="item item-input">
+            <h2><i class="icon ion-ios-football" aria-hidden="true"> Prospection Objective </i></h2>
+          </label>
+          <label class="item item-input">
+          <textarea placeholder="Explain your prospection objective" ng-model="action.prospection.objective" required></textarea>
+          </label>
+
+           <label class="item item-input">
+              <i class="icon ion-person">Contact: </i>
+              <p>{{action.prospection.contact}}</p>
+          </label>
+           <label class="item item-input">
+              <span class="input-label">  <i class="icon ion-calendar" aria-hidden="true"> Meeting Date</i></span>
+              <input type="date" ng-model="action.prospection.meeting_date" required>
+          </label>
+          <label class="item">
+            <button class="button button-block button-energized" type="submit" ng-disabled="editRespForm.$invalid">Edit Action</button>
+          </label>
+        </div>
+      </form>
+    </ion-content>
+  </div>
+
+
+
 </ion-modal-view>

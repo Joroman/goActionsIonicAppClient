@@ -62,7 +62,7 @@ angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services', 'ion-flo
     url:'/home',
     views:{
       'mainContent':{
-        templateUrl:'templates/home.html',
+        templateUrl:'templates/home.html'
         //controller:'HomeController'
       }
     }
@@ -74,42 +74,6 @@ angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services', 'ion-flo
       'mainContent': {
         templateUrl: 'templates/activeActions.html',
         controller:   'ActionsController'
-      }
-    }
-  })
-  .state('app.defineList',{
-    url:'/defineList',
-    views:{
-      'mainContent':{
-        templateUrl:'templates/defineActionsList.html',
-        controller: 'ActionListController'
-      }
-    }
-  })
-  .state('app.prospectList',{
-    url:'/prospectList',
-    views:{
-      'mainContent':{
-        templateUrl:'templates/prospectActionsList.html',
-        controller:'ActionListController'
-      }
-    }
-  })
-  .state('app.requestList',{
-    url:'/requestList',
-    views:{
-      'mainContent':{
-        templateUrl:'templates/requestActionsList.html',
-        controller:'ActionListController'
-      }
-    }
-  })
-  .state('app.responseList',{
-    url:'/responseList',
-    views:{
-      'mainContent':{
-        templateUrl:'templates/responseActionsList.html',
-        controller:'ActionListController'
       }
     }
   })

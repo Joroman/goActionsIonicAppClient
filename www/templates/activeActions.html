@@ -1,4 +1,4 @@
-<ion-view view-title="Home">
+<ion-view view-title="Active Actions">
   <ion-floating-button click="openModal()" has-footer="false" button-color="#ef4e3a" text="Start Actions" icon="ion-plus" icon-color="#fff">
   </ion-floating-button>
   <ion-content>
@@ -10,7 +10,7 @@
       </div>
 
         <div class="card">
-          <a  href="#/app/defineList" class="item item-icon-left" style="background-color:#4a87ee">
+          <a  ng-click="showList(true,false,false,false)" class="item item-icon-left" style="background-color:#9fe6fa">
             <div class='row'>
               <div class="col">
                   <i style="color:#fff" class="icon ion-edit"></i>
@@ -24,7 +24,7 @@
         </div>
 
       <div class="card">
-        <a href="#/app/prospectList" class="item item-icon-left" style="background-color:#4a87ee">
+        <a ng-click="showList(false,true,false,false)" class="item item-icon-left" style="background-color:#11c1f3">
           <div class='row'>
             <div class="col">
               <i style="color:#fff" class="icon ion-chatbubbles"></i>
@@ -38,7 +38,7 @@
       </div>
 
       <div class="card">
-          <a href="#/app/requestList" class="item item-icon-left" style="background-color:#4a87ee">
+          <a ng-click="showList(false,false,true,false)" class="item item-icon-left" style="background-color:#87b1f9">
             <div class='row'>
               <div class="col">
                 <i style="color:#fff" class="icon ion-pull-request"></i>
@@ -52,7 +52,7 @@
       </div>
 
     <div class="card">
-        <a href="#/app/responseList" class="item item-icon-left" style="background-color:#4a87ee">
+        <a ng-click="showList(false,false,false,true)" class="item item-icon-left" style="background-color:#387ef5">
           <div class='row'>
             <div class="col">
               <i style="color:#fff" class="icon ion-paper-airplane"></i>
@@ -66,6 +66,79 @@
     </div>
 
 </div>
+
+<!--Active actions List-->
+<!-- DEFINE LIST -->
+
+<div ng-if="showDef" class="list">
+  <div ng-repeat="define in actionsSort.define">
+    <a class="item item-avatar" ng-click="goActionDetail(define)">
+      <img src="img/define.png">
+
+          <p><i class="icon ion-android-time"></i> Start Date: {{define.start_date  | date:'yyyy-MM-dd'}}</p>
+          <p><i class="icon ion-ios-briefcase"></i> Client: {{define.client_name}}</p>
+          <p><i class="icon ion-android-create"></i> Description: </p>
+          <p>{{define.description}}</p>
+
+    </a>
+  </div>
+</div>
+
+<!--PROSPECT lIST-->
+
+<div ng-if="showPros" class="list">
+  <div ng-repeat="pros in actionsSort.prospect">
+    <a class="item item-avatar" ng-click="goActionDetail(pros)">
+      <img src="img/prospect.png">
+
+        <p><i class="icon ion-android-time"></i> Start Date: {{pros.start_date  | date:'yyyy-MM-dd'}}</p>
+        <p><i class="icon ion-ios-briefcase"></i> Client: {{pros.client_name}}</p>
+        <p><i class="icon ion-android-time"></i> Meeting Date: {{pros.prospection.meeting_date  | date:'yyyy-MM-dd'}}</p>
+        <p><i class="icon ion-person"></i> Contact: </p>
+        <p>{{pros.prospection.contact}}</p>
+
+    </a>
+  </div>
+
+</div>
+
+<!-- REQUEST LIST -->
+
+<div ng-if="showReq" class="list">
+  <div ng-repeat="req in actionsSort.request">
+    <a class="item item-avatar" ng-click="goActionDetail(req)">
+      <img src="img/request.png">
+
+      <p><i class="icon ion-android-time"></i> Start Date: {{req.start_date  | date:'yyyy-MM-dd'}}</p>
+      <p><i class="icon ion-ios-briefcase"></i> Client: {{req.client_name}}</p>
+      <p><i class="icon ion-android-time"></i> Response Date: {{req.request.response_date  | date:'yyyy-MM-dd'}}</p>
+      <p><i class="icon ion-pricetag"></i> Estimate Budget: {{req.request.estimate_budget}}€</p>
+
+    </a>
+  </div>
+
+</div>
+
+<!-- RESPONSE LIST-->
+
+<div ng-if="showRes" class="list">
+  <div ng-repeat="res in actionsSort.response">
+    <a class="item item-avatar" ng-click="goActionDetail(res)">
+      <img src="img/response.png">
+          <p>  <i class="icon ion-android-time"></i> Offer Send: {{res.response.date_send  | date:'yyyy-MM-dd'}}</p>
+          <p><i class="icon ion-ios-briefcase"></i> Client: {{res.client_name}}</p>
+          <p><i class="icon ion-clipboard"></i> Offer Name: {{res.response.offer_name  | date:'yyyy-MM-dd'}}</p>
+          <p><i class="icon ion-pricetag"></i> Budget: {{res.response.offer_budget}}€</p>
+          <p><i class="icon ion-pie-graph"></i> Margin: {{res.response.offer_margin}}%</p>
+    </a>
+  </div>
+</div>
+
+
+
+
+
+
 </ion-content>
 
 </ion-view>

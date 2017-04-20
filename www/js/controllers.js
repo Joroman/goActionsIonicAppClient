@@ -404,6 +404,10 @@ function($scope,$stateParams,clientsService,$ionicModal,$ionicActionSheet,$ionic
 
 .controller('ActionsController',['$scope','actionsService','actionsSortService','$state','$ionicModal','clientsService','$ionicPopup',
 function($scope,actionsService,actionsSortService,$state,$ionicModal,clientsService,$ionicPopup) {
+  $scope.showDef  = false;
+  $scope.showPros = false;
+  $scope.showReq  = false;
+  $scope.showRes  = false;
 
   $scope.loadActions = function(){
     $scope.actions=actionsService.query()
@@ -476,31 +480,40 @@ function($scope,actionsService,actionsSortService,$state,$ionicModal,clientsServ
 
        };
 
+  /*****************SHOW LIST ACTION**************************/
+  $scope.showList= function(define,prospect,request,response){
+    $scope.actions=actionsService.query()
+      .$promise.then(
+            function(res){
+              $scope.actions = res;
+              $scope.actionsSort = actionsSortService.sortActions(res);
 
-}])
-
-.controller('ActionListController',['$scope','actionsService','$state','actionsSortService',function($scope,actionsService,$state,actionsSortService){
-  $scope.actions=actionsService.query()
-  .$promise.then(
-    function(response){
-      $scope.actions = response;
-      $scope.actionsSort = actionsSortService.sortActions(response);
-    },function (response) {
-       $scope.message = "Error: "+response.status + " " + response.statusText;
-    });
+              $scope.showDef  = define;
+              $scope.showPros = prospect;
+              $scope.showReq  = request;
+              $scope.showRes  = response;
 
 
+          },function (response) {
+               $scope.message = "Error: "+response.status + " " + response.statusText;
+      });
 
-    $scope.goActionDetail = function(action){
-      //go to contacts
-      $state.go('app.actionDetail',{id:action._id});
-    };
+  }
+
+  $scope.goActionDetail = function(action){
+    //go to contacts
+    $scope.showDef  = false;
+    $scope.showPros = false;
+    $scope.showReq  = false;
+    $scope.showRes  = false;
+    $state.go('app.actionDetail',{id:action._id});
+  };
 
 }])
 
 .controller('ActionDetailController',['$scope','$stateParams','actionsService','$ionicModal','clientsService','$ionicPopup','$state',
 function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPopup,$state){
-
+  $scope.action={};
     var loadAction = function(){
       if($stateParams!= null){
         $scope.action=actionsService.get({id:$stateParams.id})
@@ -527,16 +540,23 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
 
     /*********************GIBVE THE CURRENT PHASE OF THE ACTION *******/
     var getActionState = function (action) {
-      var actionState = {define:false,prospect:false,request:false,response:false};
+      var actionState = {define:true,prospect:false,request:false,response:false};
        // ACTIVE ACTIONS DEFINE ACTIONS
         if (action.feedback==null && action.response==null && action.request==null && action.prospection==null){
             actionState.define=true;
+            actionState.prospect=false;
+            actionState.request=false;
+            actionState.response=false;
             $scope.action.start_date    = new Date (action.start_date);
             $scope.action.end_date      = new Date (action.end_date);
+
         }
        // ACTIVE ACTIONS PORSPECTION ACTIONS
        if (action.feedback==null && action.response==null && action.request==null && action.prospection!=null){
           actionState.prospect=true;
+          actionState.define=false;
+          actionState.request=false;
+          actionState.response=false;
           $scope.action.start_date    = new Date (action.start_date);
           $scope.action.end_date      = new Date (action.end_date);
           $scope.action.prospection.meeting_date = new Date(action.prospection.meeting_date);
@@ -544,6 +564,9 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
        // ACTIVE ACTIONS REQUEST ACTION
        if (action.feedback==null && action.response==null && action.request!=null && action.prospection!=null){
           actionState.request=true;
+          actionState.define=false;
+          actionState.prospect=false;
+          actionState.response=false;
            $scope.action.start_date    = new Date (action.start_date);
            $scope.action.end_date      = new Date (action.end_date);
            $scope.action.prospection.meeting_date  = new Date(action.prospection.meeting_date);
@@ -552,6 +575,9 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
       //ACTIVE ACTIONS RESPONSE ACTION
       if (action.feedback==null && action.response!=null && action.request!=null && action.prospection!=null){
           actionState.response=true;
+          actionState.define=false;
+          actionState.prospect=false;
+          actionState.request=false;
           $scope.action.start_date    = new Date (action.start_date);
           $scope.action.end_date      = new Date (action.end_date);
           $scope.action.prospection.meeting_date  = new Date(action.prospection.meeting_date);
@@ -567,7 +593,7 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
 
     //LOAD ACTIONS AND THE STATE
     loadAction();
-    loadClient();
+
 
     /******************MODALS Edit phase***********************/
     //EDIT MODAL
@@ -577,9 +603,11 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
      }).then(function(modal) {
        $scope.editModal = modal;
      });
+
      $scope.openEditModal = function() {
        $scope.editModal.show();
      };
+
      $scope.closeEditModal = function() {
        $scope.editModal.hide();
      };
@@ -593,7 +621,7 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
         },function(response){
              $scope.message = "Error: "+response.status + " " + response.statusText;
         });
-    }
+    };
 
     /******************MODALS new Phase***********************/
     //NEW PHASE MODAL
@@ -604,17 +632,32 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
        $scope.newModal = modal;
      });
      $scope.openNewModal = function() {
-       $scope.action.prospection = {};
+       createNewActionPhase();
        $scope.newModal.show();
      };
      $scope.closeNewModal = function() {
        $scope.newModal.hide();
      };
 
+     var createNewActionPhase = function(){
+        if($scope.actionState.define == true){
+          $scope.action.prospection={};
+          $scope.action.prospection.contact="";
+        }
+        if($scope.actionState.prospect == true)
+        {
+          $scope.action.request={};
+        }
+        if($scope.actionState.request == true)
+          $scope.action.response={};
+        if($scope.action.response==true)
+          $scope.actionState.feedback={};
+     }
      // Triggered on a button click, or some other target
      //ionic popUp to show the client contacts and choose one
      $scope.showPopup = function() {
-       loadClient();
+       $scope.action.prospection.contact="";
+      loadClient();
        $scope.myPopup = $ionicPopup.show({
          templateUrl: 'templates/popUpContacts.html',
              title: 'Select Client',
@@ -629,10 +672,12 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
        });
      };
 
-    $scope.chooseContact = function(contact){
-        $scope.action.prospection.contact = contact.name + " "+ contact.category +","+" "+ contact.phone +","+" "+ contact.email;
-        $scope.myPopup.close();
-    }
+     $scope.chooseContact = function(contact){
+         $scope.action.prospection.contact = contact.name + " "+ contact.category +","+" "+ contact.phone +","+" "+ contact.email;
+         $scope.myPopup.close();
+
+     }
+
 
     $scope.createNewPhase = function () {
       actionsService.delete({id:$scope.action._id})
@@ -642,7 +687,8 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
           .$promise.then(
             function(res){
               $scope.closeNewModal();
-              $scope.actionState=getActionState(res);
+            //  $scope.actionState=getActionState(res);
+              $state.go('app.activeActions');
             },function(res){
               $scope.message = "Error: "+response.status + " " + response.statusText;
             });
@@ -654,7 +700,7 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
     }
 
     /******************MODALS closeAction***********************/
-    //NEW PHASE MODAL
+    //DELETE MODAL
     $ionicModal.fromTemplateUrl('templates/modals/deleteActionModal.html', {
        scope: $scope,
        animation: 'slide-in-up'
@@ -667,7 +713,7 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
      };
      $scope.closeDeleteModal = function() {
        $scope.deleteModal.hide();
-       retunrList();
+      $state.go('app.activeActions');
      };
 
 
@@ -690,23 +736,6 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
           },function(response){
               $scope.message = "Error: "+response.status + " " + response.statusText;
           });
-    };
-
-    //retunr to the list when de actiondetail is close
-    var retunrList = function (){
-      if(  $scope.actionState.define == true){
-          $state.go('app.defineList');
-      }
-      if(  $scope.actionState.prospect == true){
-          $state.go('app.prospectList');
-      }
-      if(  $scope.actionState.request == true){
-          $state.go('app.requestList');
-      }
-      if(  $scope.actionState.response == true){
-          $state.go('app.responseList');
-      }
-
     };
 
 }])

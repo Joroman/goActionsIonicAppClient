@@ -27,11 +27,14 @@
     <ion-content>
         <!--ion-list is made by ion-item-->
       <ion-list>
-        <ion-item  class="item-divider">
+        <ion-item  menu-closeclass="item-divider">
             ACTIONS
         </ion-item>
+        <ion-item menu-close href="#/app/home">
+            GO Home
+        </ion-item>
         <ion-item menu-close href="#/app/activeActions">
-            Home Actions
+            Active Actions
         </ion-item>
         <ion-item menu-close ui-sref=".clients">
             Clients
@@ -53,7 +56,7 @@
           Logout
         </ion-item>
         <ion-item menu-close ng-click="register()">
-          Register
+          Registermenu-close 
         </ion-item>
       </ion-list>
     </ion-content>
