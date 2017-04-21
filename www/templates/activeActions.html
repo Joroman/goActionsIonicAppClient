@@ -1,8 +1,14 @@
 <ion-view view-title="Active Actions">
-    <div ng-show="showPanel">
+
+  <div ng-show="showPanel">
+      <ion-nav-bar class="bar bar-positive">
+          <ion-nav-back-button>
+          </ion-nav-back-button>
+      </ion-nav-bar>
+
       <ion-floating-button click="openModal()" has-footer="false" button-color="#33cd5f" text="Start Actions" icon="ion-plus" icon-color="#fff">
       </ion-floating-button>
-    </div>
+  </div>
   <ion-content>
     <div ng-show="showPanel" class="list card">
 

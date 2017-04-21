@@ -512,8 +512,9 @@ function($scope,actionsService,actionsSortService,$state,$ionicModal,clientsServ
 
   $scope.goActionDetail = function(action){
     //go to contacts
-    $scope.resetView();
     $state.go('app.actionDetail',{id:action._id});
+    $scope.resetView();
+
   };
 
 }])
