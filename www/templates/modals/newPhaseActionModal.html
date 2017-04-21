@@ -1,4 +1,6 @@
 <ion-modal-view>
+
+<!--Define State-->
 <div ng-if ="actionState.define">
   <ion-header-bar style="background-color:#11c1f3">
     <h1 class="title"  style="color:#fff">New Phase Prospect Action</h1>
@@ -36,16 +38,16 @@
 
   </ion-content>
 </div>
-
+<!--Define Prsopect-->
 <div ng-if ="actionState.prospect">
   <ion-header-bar style="background-color:#87b1f9">
-  <h1 class="title" style="color:#fff">New Phase Request Action </h1>
-  <div class="buttons">
-    <button class="button button-clear" ng-click="closeNewModal()">Close</button>
-  </div>
+      <h1 class="title" style="color:#fff">New Phase Request Action </h1>
+      <div class="buttons">
+        <button class="button button-clear" ng-click="closeNewModal()">Close</button>
+      </div>
   </ion-header-bar>
-  <ion-content>
 
+  <ion-content>
   <form ng-submit="createNewPhase()">
     <div class="list">
 
@@ -53,14 +55,14 @@
         <h2><i class="icon ion-pull-request" aria-hidden="true"> Client Request Services or Projects: </i></h2>
       </label>
       <label class="item item-input">
-      <textarea placeholder="Enter the client request services or porducts " ng-model="action.request.service_prodcut" required></textarea>
+      <textarea placeholder="Enter the client request services or porducts " ng-model="action.request.service_product" required></textarea>
       </label>
 
       <label class="item item-input">
         <h2><i class="icon ion-clipboard" aria-hidden="true"> Estimate resources project: </i></h2>
       </label>
       <label class="item item-input">
-      <textarea placeholder="Enter the resources you think need in order to make the project" ng-model="action.request.resource" required></textarea>
+      <textarea placeholder="Enter the resources you think need in order to make the project" ng-model="action.request.resources" required></textarea>
       </label>
 
       <label class="item item-input">
@@ -79,7 +81,7 @@
 
   </ion-content>
 </div>
-
+<!-- Request State-->
 <div ng-if ="actionState.request">
   <ion-header-bar style="background-color:#387ef5">
   <h1 class="title" style="color:#fff">New Phase Response Action</h1>
@@ -117,7 +119,7 @@
 
   </ion-content>
 </div>
-
+<!--Response State-->
 <div ng-if ="actionState.response">
   <ion-header-bar style="background-color:#f0b840">
   <h1 class="title" style="color:#fff">End Action</h1>

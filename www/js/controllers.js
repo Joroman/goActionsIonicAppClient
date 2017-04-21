@@ -404,6 +404,7 @@ function($scope,$stateParams,clientsService,$ionicModal,$ionicActionSheet,$ionic
 
 .controller('ActionsController',['$scope','actionsService','actionsSortService','$state','$ionicModal','clientsService','$ionicPopup',
 function($scope,actionsService,actionsSortService,$state,$ionicModal,clientsService,$ionicPopup) {
+  $scope.showPanel= true;
   $scope.showDef  = false;
   $scope.showPros = false;
   $scope.showReq  = false;
@@ -488,6 +489,7 @@ function($scope,actionsService,actionsSortService,$state,$ionicModal,clientsServ
               $scope.actions = res;
               $scope.actionsSort = actionsSortService.sortActions(res);
 
+              $scope.showPanel= false;
               $scope.showDef  = define;
               $scope.showPros = prospect;
               $scope.showReq  = request;
@@ -500,12 +502,17 @@ function($scope,actionsService,actionsSortService,$state,$ionicModal,clientsServ
 
   }
 
-  $scope.goActionDetail = function(action){
-    //go to contacts
+  $scope.resetView= function(){
+    $scope.showPanel= true;
     $scope.showDef  = false;
     $scope.showPros = false;
     $scope.showReq  = false;
     $scope.showRes  = false;
+  }
+
+  $scope.goActionDetail = function(action){
+    //go to contacts
+    $scope.resetView();
     $state.go('app.actionDetail',{id:action._id});
   };
 
@@ -650,6 +657,7 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
         }
         if($scope.actionState.request == true)
           $scope.action.response={};
+
         if($scope.action.response==true)
           $scope.actionState.feedback={};
      }

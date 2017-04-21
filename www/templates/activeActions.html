@@ -1,69 +1,62 @@
 <ion-view view-title="Active Actions">
-  <ion-floating-button click="openModal()" has-footer="false" button-color="#ef4e3a" text="Start Actions" icon="ion-plus" icon-color="#fff">
-  </ion-floating-button>
-  <ion-content>
-    <div class="list card">
-      <div class="row">
-        <div class="col">
-            <h3 style="color:#4a87ee;text-align:center"><i class="icon ion-power"> Active Actions</i></h3>
-        </div>
-      </div>
-
-        <div class="card">
-          <a  ng-click="showList(true,false,false,false)" class="item item-icon-left" style="background-color:#9fe6fa">
-            <div class='row'>
-              <div class="col">
-                  <i style="color:#fff" class="icon ion-edit"></i>
-                  <h2 style="color:#fff">{{actionsSort.labelDefine}}</h2>
-              </div>
-              <div class="col">
-                  <h2 style="color:#fff;text-align:right">  {{actionsSort.define.length}} </h2>
-              </div>
-            </div>
-          </a>
-        </div>
-
-      <div class="card">
-        <a ng-click="showList(false,true,false,false)" class="item item-icon-left" style="background-color:#11c1f3">
-          <div class='row'>
-            <div class="col">
-              <i style="color:#fff" class="icon ion-chatbubbles"></i>
-              <h2 style="color:#fff">{{actionsSort.labelProspection}}</h2>
-            </div>
-            <div class="col">
-                <h2 style="color:#fff;text-align:right">  {{actionsSort.prospect.length}}  </h2>
-            </div>
-          </div>
-        </a>
-      </div>
-
-      <div class="card">
-          <a ng-click="showList(false,false,true,false)" class="item item-icon-left" style="background-color:#87b1f9">
-            <div class='row'>
-              <div class="col">
-                <i style="color:#fff" class="icon ion-pull-request"></i>
-                <h2 style="color:#fff"> {{actionsSort.labelRequest}} </h2>
-              </div>
-              <div class="col">
-                  <h2 style="color:#fff;text-align:right">{{actionsSort.request.length}}  </h2>
-              </div>
-            </div>
-          </a>
-      </div>
-
-    <div class="card">
-        <a ng-click="showList(false,false,false,true)" class="item item-icon-left" style="background-color:#387ef5">
-          <div class='row'>
-            <div class="col">
-              <i style="color:#fff" class="icon ion-paper-airplane"></i>
-              <h2 style="color:#fff"> {{actionsSort.labelResponse}} </h2>
-            </div>
-            <div class="col">
-                <h2 style="color:#fff;text-align:right">{{actionsSort.response.length}} </h2>
-            </div>
-          </div>
-        </a>
+    <div ng-show="showPanel">
+      <ion-floating-button click="openModal()" has-footer="false" button-color="#33cd5f" text="Start Actions" icon="ion-plus" icon-color="#fff">
+      </ion-floating-button>
     </div>
+  <ion-content>
+    <div ng-show="showPanel" class="list card">
+
+            <h4 style="color:#9fe6fa;text-align:center"><i class="icon ion-arrow-down-c"> GO    Befor Meeting</i></h4>
+
+
+      <div class="row">
+          <div class="col-offset-25 col-50">
+            <div class="card">
+              <a  ng-click="showList(true,false,false,false)" class="item item-icon-left" style="background-color:#9fe6fa">
+                      <i style="color:#fff" class="icon ion-edit"></i>
+                      <h3 style="color:#fff">{{actionsSort.labelDefine}}</h4>
+              </a>
+            </div>
+          </div>
+      </div>
+
+
+
+      <div class="row">
+        <div class="col-offset-25 col-50">
+            <div class="card">
+              <a ng-click="showList(false,true,false,false)" class="item item-icon-left" style="background-color:#11c1f3">
+                    <i style="color:#fff" class="icon ion-chatbubbles"></i>
+                    <h3 style="color:#fff">{{actionsSort.labelProspection}}</h4>
+              </a>
+            </div>
+          </div>
+      </div>
+
+        <h4 style="color:#87b1f9;text-align:center"><i class="icon ion-arrow-down-c"> GO    After Meeting</i></h4>
+
+      <div class="row">
+        <div class="col-offset-25 col-50">
+            <div class="card">
+                <a ng-click="showList(false,false,true,false)" class="item item-icon-left" style="background-color:#87b1f9">
+                      <i style="color:#fff" class="icon ion-pull-request"></i>
+                      <h3 style="color:#fff"> {{actionsSort.labelRequest}} </h4>
+                </a>
+            </div>
+        </div>
+      </div>
+
+
+        <div class="row">
+        <div class="col-offset-25 col-50">
+            <div class="card">
+                <a ng-click="showList(false,false,false,true)" class="item item-icon-left" style="background-color:#387ef5">
+                      <i style="color:#fff" class="icon ion-paper-airplane"></i>
+                      <h3 style="color:#fff"> {{actionsSort.labelResponse}} </h4>
+                </a>
+            </div>
+          </div>
+      </div>
 
 </div>
 
@@ -71,6 +64,8 @@
 <!-- DEFINE LIST -->
 
 <div ng-if="showDef" class="list">
+
+  <h4 style="color:#9fe6fa;text-align:center"> Defined actions</i></h4>
   <div ng-repeat="define in actionsSort.define">
     <a class="item item-avatar" ng-click="goActionDetail(define)">
       <img src="img/define.png">
@@ -82,11 +77,20 @@
 
     </a>
   </div>
+  <br>
+  <div class="row">
+    <div class="col">
+      <div class="bar bar-footer">
+      <button class="button button-positive  button-block" ng-click="resetView()">Back</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!--PROSPECT lIST-->
 
 <div ng-if="showPros" class="list">
+    <h4 style="color:#11c1f3;text-align:center"> Prospect actions</i></h4>
   <div ng-repeat="pros in actionsSort.prospect">
     <a class="item item-avatar" ng-click="goActionDetail(pros)">
       <img src="img/prospect.png">
@@ -99,12 +103,20 @@
 
     </a>
   </div>
-
+  <br>
+  <div class="row">
+    <div class="col">
+      <div class="bar bar-footer">
+      <button class="button button-positive  button-block" ng-click="resetView()">Back</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- REQUEST LIST -->
 
 <div ng-if="showReq" class="list">
+    <h4 style="color:#87b1f9;text-align:center"> Request actions</i></h4>
   <div ng-repeat="req in actionsSort.request">
     <a class="item item-avatar" ng-click="goActionDetail(req)">
       <img src="img/request.png">
@@ -112,16 +124,24 @@
       <p><i class="icon ion-android-time"></i> Start Date: {{req.start_date  | date:'yyyy-MM-dd'}}</p>
       <p><i class="icon ion-ios-briefcase"></i> Client: {{req.client_name}}</p>
       <p><i class="icon ion-android-time"></i> Response Date: {{req.request.response_date  | date:'yyyy-MM-dd'}}</p>
-      <p><i class="icon ion-pricetag"></i> Estimate Budget: {{req.request.estimate_budget}}€</p>
+      <p><i class="icon ion-pricetag"></i> Estimate Budget: {{req.request.estimate_budget}} €</p>
 
     </a>
   </div>
-
+  <br>
+  <div class="row">
+    <div class="col">
+      <div class="bar bar-footer">
+      <button class="button button-positive  button-block" ng-click="resetView()">Back</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- RESPONSE LIST-->
 
 <div ng-if="showRes" class="list">
+    <h4 style="color:#387ef5;text-align:center"> Response actions</i></h4>
   <div ng-repeat="res in actionsSort.response">
     <a class="item item-avatar" ng-click="goActionDetail(res)">
       <img src="img/response.png">
@@ -132,11 +152,15 @@
           <p><i class="icon ion-pie-graph"></i> Margin: {{res.response.offer_margin}}%</p>
     </a>
   </div>
+  <br>
+  <div class="row">
+    <div class="col">
+      <div class="bar bar-footer">
+      <button class="button button-positive  button-block" ng-click="resetView()">Back</button>
+      </div>
+    </div>
+  </div>
 </div>
-
-
-
-
 
 
 </ion-content>

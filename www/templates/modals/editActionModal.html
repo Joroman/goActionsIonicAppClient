@@ -46,7 +46,7 @@
   <!--MODAL EDIT PROSPECT-->
 <div ng-if="actionState.prospect">
     <ion-header-bar class="bar bar-energized">
-      <h1 class="title">Edit Action</h1>
+      <h1 class="title">Edit Prospect Action</h1>
 
         <button class="button button-clear" ng-click="closeEditModal()">Close</button>
 
@@ -57,22 +57,17 @@
         <div class="list">
 
           <label class="item item-input">
-             <i class="icon ion-person"></i><button class="button button-light" ng-click="showPopup()"> Contact <i class="fa fa-search" aria-hidden="true"></i></button>
-             <input type="text" ng-model="action.prospection.contact" required>
-         </label>
-
-
-          <label class="item item-input">
             <h2><i class="icon ion-ios-football" aria-hidden="true"> Prospection Objective </i></h2>
           </label>
           <label class="item item-input">
           <textarea placeholder="Explain your prospection objective" ng-model="action.prospection.objective" required></textarea>
           </label>
 
-           <label class="item item-input">
-              <i class="icon ion-person">Contact: </i>
-              <p>{{action.prospection.contact}}</p>
+          <label class="item item-input">
+             <i class="icon ion-person"></i><button class="button button-light" ng-click="showPopup()"> Contact <i class="fa fa-search" aria-hidden="true"></i></button>
+             <input type="text" ng-model="action.prospection.contact" required>
           </label>
+
            <label class="item item-input">
               <span class="input-label">  <i class="icon ion-calendar" aria-hidden="true"> Meeting Date</i></span>
               <input type="date" ng-model="action.prospection.meeting_date" required>
@@ -85,6 +80,84 @@
     </ion-content>
   </div>
 
+  <!--MODAL EDIT REQUEST-->
+  <div ng-if="actionState.request">
+    <ion-header-bar class="bar bar-energized">
+      <h1 class="title">Edit Request Action</h1>
 
+        <button class="button button-clear" ng-click="closeEditModal()">Close</button>
+
+    </ion-header-bar>
+
+    <ion-content>
+      <form ng-submit="updateAction()">
+        <div class="list">
+          <label class="item item-input">
+            <h2><i class="icon ion-pull-request" aria-hidden="true"> Client Request Services or Projects: </i></h2>
+          </label>
+          <label class="item item-input">
+          <textarea placeholder="Enter the client request services or porducts " ng-model="action.request.service_product" required></textarea>
+          </label>
+
+          <label class="item item-input">
+            <h2><i class="icon ion-clipboard" aria-hidden="true"> Estimate resources project: </i></h2>
+          </label>
+          <label class="item item-input">
+          <textarea placeholder="Enter the resources you think need in order to make the project" ng-model="action.request.resources" required></textarea>
+          </label>
+
+          <label class="item item-input">
+             <span class="input-label"> <i class="icon ion-cash" aria-hidden="true"> Estimate Budget: </i></span>
+             <input type="number" ng-model="action.request.estimate_budget" required>
+         </label>
+         <label class="item item-input">
+            <span class="input-label">  <i class="icon ion-calendar" aria-hidden="true"> Response Date: </i></span>
+            <input type="date" ng-model="action.request.response_date" required>
+          </label>
+          <label class="item">
+            <button class="button button-block button-energized" type="submit" ng-disabled="editRespForm.$invalid">Edit Action</button>
+          </label>
+        </div>
+      </form>
+    </ion-content>
+  </div>
+
+  <!--MODAL EDIT RESPONSE-->
+  <div ng-if="actionState.response">
+    <ion-header-bar class="bar bar-energized">
+      <h1 class="title">Edit Response Action</h1>
+
+        <button class="button button-clear" ng-click="closeEditModal()">Close</button>
+
+    </ion-header-bar>
+
+    <ion-content>
+      <form ng-submit="updateAction()">
+        <div class="list">
+          <label class="item item-input">
+              <div class="input-label"><i class="icon ion-ios-folder" aria-hidden="true"> Offer Name:</i></div>
+              <input type="text" ng-model="action.response.offer_name" required>
+          </label>
+          <label class="item item-input">
+              <div class="input-label"><i class="icon ion-cash" aria-hidden="true"> Offer Budget: </i></div>
+              <input type="number" ng-model="action.response.offer_budget" required>
+          </label>
+
+          <label class="item item-input">
+             <span class="input-label"><i class="icon ion-calculator" aria-hidden="true"> Offer Margin: </i></span>
+             <input type="number" ng-model="action.response.offer_margin" required>
+         </label>
+
+         <label class="item item-input">
+            <span class="input-label"> <i class="icon ion-calendar" aria-hidden="true"> Date Send:  </i></span>
+            <input type="date" ng-model="action.response.date_send" required>
+        </label>
+          <label class="item">
+            <button class="button button-block button-energized" type="submit" ng-disabled="editRespForm.$invalid">Edit Action</button>
+          </label>
+        </div>
+      </form>
+    </ion-content>
+  </div>
 
 </ion-modal-view>
