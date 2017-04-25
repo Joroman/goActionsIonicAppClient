@@ -12,7 +12,7 @@
 
   <ion-content>
     <div class="list">
-      <div ng-repeat="contact in client.contacts">
+      <div ng-repeat="contact in client.contacts | orderBy:'name'">
         <a class="item item-avatar" ng-click="show(contact)">
           <img src="img/contact.png">
           <h2>{{contact.name}}  {{contact.category}}</h2>

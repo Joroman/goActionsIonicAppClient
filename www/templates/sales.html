@@ -4,6 +4,40 @@
     </ion-nav-back-button>
   </ion-nav-bar>
   <ion-content>
-    <h1>Sales</h1>
+<div class="card">
+
+      <div class="item item-text-wrap">
+        <h2 style="color:#c6c6c6;text-align:center">Sales {{year}} Vs Sales Year {{year-1}} </h2>
+        <br>
+        <canvas id="line" class="chart chart-line" chart-data="data"
+          chart-labels="labels" chart-series="series" chart-options="options"
+          chart-dataset-override="datasetOverride" chart-click="onClick">
+        </canvas>
+
+      </div>
+
+      <div class="list">
+
+        <div class="item item-input-inset">
+          <label class="item-input-wrapper">
+          Year:  <input type="number" ng-model="year">
+          </label>
+          <button class="button button-small button-balanced" ng-click="" style="color:#fff">
+            GO
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+    {{sales.length}}
+    {{year}}
+    {{salesYear.length}}
+    {{salesLastYear.length}}
+    {{clientsYear}}
+    {{clientsLastYear}}
+    {{dataSalesYear}}
+    {{dataSalesLastYear}}
+
   </ion-content>
 </ion-view>

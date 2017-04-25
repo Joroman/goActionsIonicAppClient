@@ -11,24 +11,24 @@
     <div class="list">
         <!--put ng-repeat into <A-->
           <div ng-repeat="client in clients" ng-click='show(client)'>
-                  <div class="item item-divider" style="background-color:#11c1f3;text-align: center">
-                    <h2 style="color:#fff">{{client.company_name}}</h2>
+                  <div class="item item-divider" style="text-align: center">
+                    <h2 style="color:#c6c6c6">{{client.company_name}}</h2>
                   </div>
                   <a class="item item-icon-left" ng-click='show()'>
-                    <i class="icon ion-ios-location-outline"></i>
-                  {{client.direction}}  {{client.city}}
+                  <p>  <i style="color:#11c1f3" class="icon ion-ios-location-outline"></i>
+                  {{client.direction}}  {{client.city}} </p>
                   </a>
                   <a class="item item-icon-left" ng-click='show()'>
-                    <i class="icon ion-map"></i>
-                    {{client.country}}
+                    <p><i style="color:#11c1f3" class="icon ion-map"></i>
+                    {{client.country}} </p>
                   </a>
                   <a class="item item-icon-left" ng-click='show()'>
-                    <i class="icon ion-ios-telephone-outline"></i>
-                    {{client.phone}}
+                    <p><i style="color:#11c1f3" class="icon ion-ios-telephone-outline"></i>-
+                    {{client.phone}}</p>
                   </a>
                   <a class="item item-icon-left" ng-click='show()'>
-                    <i class="icon ion-email"></i>
-                    {{client.email}}
+                    <p><i style="color:#11c1f3" class="icon ion-email"></i>
+                    {{client.email}}</p>
                   </a>
         </div>
     </div>

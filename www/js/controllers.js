@@ -106,7 +106,9 @@ function($scope, $ionicActionSheet, $timeout, clientsService, $state, $ionicModa
   $scope.loadClients = function(){
     clientsService.query(
         function (response) {
-          $scope.clients = response.sort(function(a, b){return a.company_name - b.company_name});
+          $scope.clients = response.sort(function(a,b) {
+            return (a.company_name > b.company_name) ? 1 : ((b.company_name > a.company_name) ? -1 : 0);
+          } );
         },
         function (response) {
            response.console.error();
@@ -746,6 +748,262 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
               $scope.message = "Error: "+response.status + " " + response.statusText;
           });
     };
+
+}])
+
+.controller('CloseActionsController',['$scope','actionsService','$state',function($scope,actionsService,$state){
+
+  $scope.year       = new Date().getFullYear();
+  $scope.wins       =[];
+  $scope.losses     =[];
+  $scope.dataWins   =[];
+  $scope.dataLosses =[];
+  $scope.data       = new Array (2);
+  $scope.data[0]    = new Array(12);
+  $scope.data[1]    = new Array (12);
+  $scope.showWin        =true;
+
+  $scope.seeList=function(){
+    $scope.showWin= !$scope.showWin;
+  }
+
+  var getActions = function(){
+    actionsService.query()
+      .$promise.then(
+        function(response){
+          takeCloseActions(response);
+          $scope.wins       = filterYear($scope.wins);
+          $scope.losses     = filterYear($scope.losses);
+          $scope.dataWins   = countOnMonths($scope.wins);
+          $scope.dataLosses = countOnMonths($scope.losses);
+          setDataValue();
+      },function(response){
+        $scope.message = "Error: "+response.status + " " + response.statusText;
+    });
+  };
+
+  getActions();
+
+  //take only the actions close and fitlter for win and lose.
+  var takeCloseActions = function (actions) {
+        for (var x=0; x<actions.length; x++){
+          if(actions[x].feedback!= null && actions[x].feedback.offer_win==true){
+            $scope.wins.push(actions[x]);
+          }
+          if(actions[x].feedback!= null && actions[x].feedback.offer_win==false){
+            $scope.losses.push(actions[x]);
+          }
+        }
+      $scope.wins.sort(function(a,b) {
+          return new Date(a.feedback.project_start_date).getTime() - new Date(b.feedback.project_start_date).getTime();
+      });
+      $scope.losses.sort(function(a,b) {
+        return new Date(a.feedback.project_start_date).getTime() - new Date(b.feedback.project_start_date).getTime();
+    });
+    };
+
+
+    //filter the array for year
+    var filterYear = function(actions){
+      var arrayYear= [];
+      for (var x = 0 ; x<actions.length; x++){
+        if($scope.year === new Date (actions[x].feedback.project_start_date).getFullYear()){
+          arrayYear.push(actions[x]);
+        }
+      }
+      return arrayYear;
+    };
+
+    // put in an array of months 0 January 11 dicember
+    // count de number of actions in this month
+    var countOnMonths = function (array) {
+      var orderArray = new Array(12);
+      var count = 0;
+      for (var month = 0; month<12; month++){
+        count=0;
+        for (var x = 0; x< array.length; x++){
+          if (month === new Date(array[x].feedback.project_start_date).getMonth())
+              count ++;
+        }
+        orderArray[month]=count;
+      }
+
+      return orderArray;
+    };
+
+
+    //generate Bidimensional array for tuelve months
+    var setDataValue = function(){
+      for (var x=0; x<12; x++){
+        $scope.data[0][x]=$scope.dataWins[x];
+        $scope.data[1][x]=$scope.dataLosses[x];
+      }
+    };
+
+    //change the year update the GRAPH
+    $scope.updateGraph = function(year){
+      $scope.year=year;
+      $scope.wins       =[];
+      $scope.losses     =[];
+      $scope.dataWins   =[];
+      $scope.dataLosses =[];
+      $scope.data       = new Array (2);
+      $scope.data[0]    = new Array(12);
+      $scope.data[1]    = new Array (12);
+      getActions();
+    };
+
+    $scope.showDetail = function(action){
+        $state.go('app.closeActionDetail',{id:action._id});
+    };
+
+    /** CREATE THE CHART TO SHOW THE GRAPH**/
+    $scope.labels = ["January", "February", "March", "April", "May", "June", "July","August","September","October","November","December"];
+    $scope.series = ['Actions WIN', 'Actions LOSE'];
+
+    $scope.onClick = function (points, evt) {
+      console.log(points, evt);
+    };
+}])
+
+.controller('CloseActionDetailController',['$scope','actionsService','$stateParams',function ($scope,actionsService,$stateParams) {
+
+  actionsService.get({id:$stateParams.id})
+  .$promise.then(
+      function(response){
+        $scope.action=response;
+        controllCars(response);
+      },function(response){
+          $scope.message = "Error: "+response.status + " " + response.statusText;
+    });
+
+    var controllCars = function (action) {
+      if(action.feedback.offer_win==true){
+          $scope.res=true;
+          $scope.req=true;
+          $scope.pro=true;
+
+      }
+      else{
+        if(action.response!=null && action.request!= null && action.prospection!=null){
+          $scope.res=true;
+          $scope.req=true;
+          $scope.pro=true;
+
+        }
+        if(action.response==null && action.request!= null && action.prospection!=null){
+          $scope.res=false;
+          $scope.req=true;
+          $scope.pro=true;
+
+        }
+        if(action.response==null && action.request== null && action.prospection!=null){
+          $scope.res=false;
+          $scope.req=false;
+          $scope.pro=true;
+
+        }
+        if(action.response==null && action.request== null && action.prospection==null){
+          $scope.res=false;
+          $scope.req=false;
+          $scope.pro=false;
+
+        }
+      }
+
+    }
+
+}])
+
+.controller('SalesController',['$scope','salesService','clientsService',function($scope,salesService,clientsService){
+
+  $scope.year             = new Date().getFullYear();
+  $scope.salesYear        =[];
+  $scope.salesLastYear    =[];
+  $scope.dataSalesYear    =[];
+  $scope.dataSalesLastYear=[];
+  $scope.clientsYear      =[];
+  $scope.clientsLastYear  =[];
+  $scope.data       = new Array (2);
+  $scope.data[0]    = new Array(12);
+  $scope.data[1]    = new Array(12);
+
+  var getSales = function(){
+    salesService.query()
+    .$promise.then(
+      function (response) {
+        $scope.sales = response;
+        $scope.salesYear        =filterYear(response,$scope.year);
+        $scope.salesLastYear    =filterYear(response,($scope.year -1));
+        $scope.clientsYear      =takeClients($scope.salesYear);
+        $scope.clientsLastYear  =takeClients($scope.salesLastYear);
+        $scope.dataSalesYear    =countMonthSales($scope.salesYear);
+        $scope.dataSalesLastYear=countMonthSales($scope.salesLastYear);
+        setValueSales();
+
+    },function(response){
+          $scope.message = "Error: "+response.status + " " + response.statusText;
+    });
+  }
+
+
+  //filter the array for year
+  var filterYear = function(sales,year){
+    var arrayYear= [];
+    for (var x = 0 ; x<sales.length; x++){
+      if(year === new Date (sales[x].sales_date).getFullYear()){
+        arrayYear.push(sales[x]);
+      }
+    }
+    return arrayYear;
+  };
+
+  //take the list of clients that have sales with sales object
+  var takeClients = function(sales){
+    var list=[];
+    if(sales.length>0){
+      for(var x =0; x< sales.length; x++){
+        if(list.indexOf(sales[x]._client)==-1){
+          list.push(sales[x]._client);
+        }
+      }
+    }
+    return list;
+  };
+
+  var countMonthSales = function(sales){
+    var arrayMonthSales = new Array(12);
+    var salesMonth=0;
+
+    for (var month =0; month<12 ; month++){
+      salesMonth=0;
+        for(var x=0; x<sales.length; x++){
+          if(month== new Date(sales[x].sales_date).getMonth())
+            salesMonth= salesMonth + sales[x].project_price;
+        }
+        arrayMonthSales[month] = salesMonth;
+    }
+    return arrayMonthSales;
+  };
+
+  var setValueSales= function(){
+    $scope.data[0]=$scope.dataSalesYear;
+    $scope.data[1]=$scope.dataSalesLastYear;
+  }
+
+  getSales();
+
+
+  /** CREATE THE CHART TO SHOW THE GRAPH**/
+  $scope.labels = ["January", "February", "March", "April", "May", "June", "July","August","September","October","November","December"];
+  $scope.series = ["Sales " + $scope.year, "Sales " + ($scope.year-1)];
+    /*$scope.data   =[
+    [65, 59, 80, 81, 56, 55, 40,90,100,20,11,200],
+   [28, 48, 40, 19, 86, 27, 90,23,99,120,11,67]
+ ];*/
+  $scope.onClick = function (points, evt) {
+    console.log(points, evt);
+  };
 
 }])
 ;

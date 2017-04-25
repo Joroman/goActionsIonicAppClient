@@ -3,11 +3,67 @@
       <ion-nav-back-button>
       </ion-nav-back-button>
     </ion-nav-bar>
+
   <ion-content>
-    <ion-list>
-    <!--  <ion-item ng-repeat="playlist in playlists" href="#/app/playlists/{{playlist.id}}">
-        {{playlist.title}}
-      </ion-item>  -->
-    </ion-list>
+
+    <div class="card">
+
+      <div class="item item-text-wrap">
+        <h2 style="color:#c6c6c6;text-align:center">Win Actions Vs Lose Actions Year {{year}}</h2>
+        <br>
+        <canvas id="line" class="chart chart-line" chart-data="data"
+        chart-labels="labels" chart-series="series" chart-options="options"
+        chart-dataset-override="datasetOverride" chart-click="onClick">
+      </canvas>
+      </div>
+
+      <div class="list">
+
+        <div class="item item-input-inset">
+          <label class="item-input-wrapper">
+          Year:  <input type="number" ng-model="year">
+          </label>
+          <button class="button button-small button-energized" ng-click="updateGraph(year)" style="background-color:#ffc900;color:#fff">
+            GO
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+<div ng-show="showWin" class="list">
+    <h5 style="color:#c6c6c6;text-align:center">WIN ACTION lIST</h5>
+    <div ng-repeat="win in wins">
+          <a class="item" ng-click="showDetail(win)">
+            <p><i class="icon ion-android-time"></i> Start Date Project: {{win.feedback.project_start_date  | date:'yyyy-MM-dd'}}</p>
+            <p><i class="icon ion-ios-briefcase"></i> Client: {{win.client_name}}</p>
+            <p> <i class="icon ion-cash" aria-hidden="true"></i> Project Budget: {{win.response.offer_budget}}€    Margin: {{win.response.offer_margin}}%</p>
+          </a>
+    </div>
+</div>
+
+<div ng-show="!showWin" class="list">
+    <h5 style="color:#c6c6c6;text-align:center">LOSE ACTION lIST</h5>
+    <div ng-repeat="lose in losses">
+          <a class="item" ng-click='showDetail(lose)'>
+            <p><i class="icon ion-android-time"></i> Close Date Action: {{lose.feedback.project_start_date  | date:'yyyy-MM-dd'}}</p>
+            <p><i class="icon ion-ios-briefcase"></i> Client: {{lose.client_name}}</p>
+          </a>
+    </div>
+</div>
+
   </ion-content>
+  <ion-footer-bar>
+
+    <div class="tabs">
+      <a class="tab-item" ng-click="seeList()">
+        Win
+      </a>
+      <a class="tab-item" ng-click="seeList()">
+        Lose
+      </a>
+    </div>
+
+  </ion-footer-bar>
 </ion-view>

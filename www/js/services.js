@@ -60,6 +60,12 @@ angular.module('myApp.services',['ngResource'])
     });
 }])
 
+.factory('salesService',['$resource','baseURL',function($resource,baseURL){
+    return $resource(baseURL+"sales/:id",null, {
+         'update':{method:'PUT'}
+    });
+}])
+
 //services to manage the local storrage.
 .factory('$localStorage', ['$window', function ($window) {
     return {

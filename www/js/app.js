@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 
-angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services', 'ion-floating-menu'])
+angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services', 'ion-floating-menu','chart.js'])
 
 .run(function($ionicPlatform, $rootScope, $ionicLoading, $timeout) {
   $ionicPlatform.ready(function() {
@@ -46,7 +46,13 @@ angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services', 'ion-flo
     });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, ChartJsProvider) {
+  // Configure all line charts
+ ChartJsProvider.setOptions('line', {
+   chartColors: ['#5cb85c','#FF7E67'],
+   responsive: true
+ });
+
   $stateProvider
 
     .state('app', {
@@ -87,12 +93,22 @@ angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services', 'ion-flo
     }
   })
 
-    .state('app.closeactions', {
+    .state('app.closeActions', {
       url: '/closeActions',
       views: {
         'mainContent': {
           templateUrl: 'templates/close_actions.html',
-          controller: ''
+          controller: 'CloseActionsController'
+        }
+      }
+    })
+
+    .state('app.closeActionDetail',{
+      url:'/closeActions/:id',
+      views:{
+        'mainContent':{
+        templateUrl:'templates/closeActionDetail.html',
+        controller:'CloseActionDetailController'
         }
       }
     })
@@ -121,7 +137,7 @@ angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services', 'ion-flo
       views: {
         'mainContent': {
           templateUrl: 'templates/sales.html',
-          controller: ''
+          controller: 'SalesController'
         }
       }
     })
