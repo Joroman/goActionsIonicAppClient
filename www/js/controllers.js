@@ -917,6 +917,7 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
 
 .controller('SalesController',['$scope','salesService','clientsService',function($scope,salesService,clientsService){
 
+  $scope.chart=true;
   $scope.year             = new Date().getFullYear();
   $scope.salesYear        =[];
   $scope.salesLastYear    =[];
@@ -928,6 +929,7 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
   $scope.data[0]    = new Array(12);
   $scope.data[1]    = new Array(12);
 
+  //take the sales and shoe the sales of the year and the past year
   var getSales = function(){
     salesService.query()
     .$promise.then(
@@ -971,6 +973,7 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
     return list;
   };
 
+  //COUNT THE MONTH SALES
   var countMonthSales = function(sales){
     var arrayMonthSales = new Array(12);
     var salesMonth=0;
@@ -986,24 +989,194 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
     return arrayMonthSales;
   };
 
+  //set value for angular-chart
   var setValueSales= function(){
     $scope.data[0]=$scope.dataSalesYear;
     $scope.data[1]=$scope.dataSalesLastYear;
-  }
+  };
+
+
+  //change the year of the angular-chart
+  $scope.showYear = function (year) {
+    $scope.year=year;
+    $scope.salesYear        =[];
+    $scope.salesLastYear    =[];
+    $scope.dataSalesYear    =[];
+    $scope.dataSalesLastYear=[];
+    $scope.clientsYear      =[];
+    $scope.clientsLastYear  =[];
+    $scope.data       = new Array (2);
+    $scope.data[0]    = new Array(12);
+    $scope.data[1]    = new Array(12);
+    $scope.series = ["Sales " + $scope.year.toString(), "Sales " + ($scope.year-1).toString()];
+    getSales();
+  };
 
   getSales();
 
-
-  /** CREATE THE CHART TO SHOW THE GRAPH**/
+  /**ANGUALR-CHART CREATE THE CHART TO SHOW THE GRAPH**/
   $scope.labels = ["January", "February", "March", "April", "May", "June", "July","August","September","October","November","December"];
-  $scope.series = ["Sales " + $scope.year, "Sales " + ($scope.year-1)];
-    /*$scope.data   =[
-    [65, 59, 80, 81, 56, 55, 40,90,100,20,11,200],
-   [28, 48, 40, 19, 86, 27, 90,23,99,120,11,67]
- ];*/
+  $scope.series = ["Sales " + $scope.year.toString(), "Sales " + ($scope.year-1).toString()];
   $scope.onClick = function (points, evt) {
     console.log(points, evt);
   };
+  $scope.line=true;
+  //change th graph line to bar
+  $scope.toggle = function(){
+    $scope.line= !$scope.line;
+
+  }
+
+  $scope.show = function (key) {
+      $scope.chart=key;
+  };
+
+}])
+
+
+.controller('SalesGraphDonut',['$scope','salesService','$ionicModal',function($scope,salesService,$ionicModal){
+//DONUT varibles
+  $scope.data4 = [];
+  $scope.labels4=[];
+  $scope.clientSales=[];
+  $scope.year= new Date().getFullYear();
+  $scope.sales=[];
+
+       //GET SALES
+    var getSales = function(){
+      salesService.query().$promise.then(
+              function(response){
+                  $scope.sales=response;
+                  var clientsList = takeClients(response);
+                  joinSalesClient(response, clientsList);
+                  },
+              function(response) {
+                  $scope.message = "Error: "+response.status + " " + response.statusText;
+                  }
+      );
+    }
+        var takeClients = function(sales){
+           var list=[];
+            if(sales.length>0){
+                for(var x =0; x< sales.length; x++){
+                    if(list.indexOf(sales[x]._client)==-1){
+                        list.push(sales[x]._client);
+                    }
+
+                }
+           }
+           return list;
+       };
+
+       var joinSalesClient = function(sales, clients) {
+           for(var i=0; i<clients.length;i++){
+               var v=0;
+               for(var x=0; x<sales.length;x++){
+                   if(clients[i].indexOf(sales[x]._client) != -1 )
+                   {
+                       if($scope.year === new Date(sales[x].sales_date).getFullYear()){
+                           v=v+sales[x].project_price;
+                       }
+                   }
+               }
+               if(v>0){
+                   $scope.data4.push(v);
+                   $scope.labels4.push(clients[i]);
+                   $scope.clientSales.push({client:clients[i],sales:v});
+               }
+           }
+       };
+
+      $scope.showClientsYear = function(year){
+           $scope.year= year;
+           $scope.data4 = [];
+           $scope.labels4=[];
+           $scope.clientSales=[];
+           $scope.sales=[];
+           getSales();
+       }
+
+  getSales();
+
+  $scope.type = 'polarArea';
+
+  $scope.toggle = function () {
+     $scope.type = $scope.type === 'polarArea' ?
+       'pie' : 'polarArea';
+   };
+
+   //MODAL SHOW CLIENT
+
+   //Modal chart bar horizontal chart vatiables
+   //dataBar: horizontal number sales month, lablesBar: vertical month, seriesBar: client
+     $scope.dataBar=[];
+     $scope.labelsBar=  ["January", "February", "March", "April", "May", "June", "July","August","September","October","November","December"];
+     $scope.seriesBar=[];
+
+   $ionicModal.fromTemplateUrl('templates/salesModal.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal;
+    });
+    $scope.openModal = function() {
+      $scope.modal.show();
+    };
+    $scope.closeModal = function() {
+      $scope.modal.hide();
+    };
+
+    $scope.setclientSalesMonth = function(client) {
+        $scope.seriesBar.push(client);
+        $scope.dataBar=[];
+        var salesYear   =filterYear($scope.sales,$scope.year);
+        var sales_client  =filterClient(salesYear,client);
+        //colacamos por mes las ventas del cliente
+        $scope.dataBar = salesMonth(sales_client);
+        $scope.openModal();
+
+    };
+
+
+    //filter the array for year
+    var filterYear = function(sales,year){
+      var arrayYear= [];
+      for (var x = 0 ; x<sales.length; x++){
+        if(year === new Date (sales[x].sales_date).getFullYear()){
+          arrayYear.push(sales[x]);
+        }
+      }
+      return arrayYear;
+    };
+
+    var filterClient = function(salesYear, client){
+      //filtramos las ventas del año por el cliente selecionado
+      var sales_client=[];
+
+      for(var x=0; x < salesYear.length; x++){
+        if(salesYear[x]._client.localeCompare(client) == 0){
+          sales_client.push(salesYear[x]);
+        }
+      }
+
+      return sales_client;
+    }
+
+    var salesMonth= function(sales_client){
+      var s =0;
+      var salesMonthClient = new Array(12);
+
+      for(var m=0; m<12; m++){
+        s=0;
+        for(var i=0; i< sales_client.length;i++){
+          if(new Date(sales_client[i].sales_date).getMonth() == m){
+              s= s + sales_client[i].project_price;
+          }
+        }
+        salesMonthClient[m]=s;
+      }
+      return salesMonthClient;
+    }
 
 }])
 ;

@@ -4,40 +4,120 @@
     </ion-nav-back-button>
   </ion-nav-bar>
   <ion-content>
-<div class="card">
+<div class="card" ng-if="chart">
 
       <div class="item item-text-wrap">
         <h2 style="color:#c6c6c6;text-align:center">Sales {{year}} Vs Sales Year {{year-1}} </h2>
         <br>
-        <canvas id="line" class="chart chart-line" chart-data="data"
-          chart-labels="labels" chart-series="series" chart-options="options"
-          chart-dataset-override="datasetOverride" chart-click="onClick">
-        </canvas>
+        <div ng-show="line">
+            <canvas id="line" class="chart chart-line" chart-data="data"
+            chart-labels="labels" chart-series="series" chart-options="options"
+            chart-dataset-override="datasetOverride" chart-click="onClick" height="265"
+                  width="300">
+            </canvas>
+        </div>
+        <div ng-show="!line">
+          <canvas id="bar" class="chart chart-bar"
+            chart-data="data" chart-labels="labels" chart-series="series" height="265"
+                  width="300">
+          </canvas>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" ng-click="toggle()">
+          <div class="track">
+            <div class="handle" ></div>
+          </div>
+        </label>
+        <div class="list">
+          <div class="item item-input-inset">
+          </div>
+          <div class="item item-input-inset">
+            <label class="item-input-wrapper">
+            Year:  <input type="number" ng-model="year">
+            </label>
+            <button class="button button-small button-balanced" ng-click="showYear(year)" style="color:#fff">
+              GO
+            </button>
+          </div>
 
-      </div>
-
-      <div class="list">
-
-        <div class="item item-input-inset">
-          <label class="item-input-wrapper">
-          Year:  <input type="number" ng-model="year">
-          </label>
-          <button class="button button-small button-balanced" ng-click="" style="color:#fff">
-            GO
-          </button>
         </div>
 
       </div>
 
+  </div>
+
+  <div ng-controller="SalesGraphDonut">
+    <div class="card" ng-if="!chart">
+
+          <div class="item item-text-wrap">
+
+            <h2 style="color:#c6c6c6;text-align:center">Year Client Sales {{year}}</h2>
+            <br>
+          <canvas id="base" class="chart-base" chart-type="type"
+            chart-data="data4" chart-labels="labels4" height="225" >
+          </canvas>
+          <label class="toggle">
+            <input type="checkbox" ng-click="toggle()">
+            <div class="track">
+              <div class="handle" ></div>
+            </div>
+          </label>
+
+
+          <div class="list">
+            <div class="item item-input-inset">
+            </div>
+            <div class="item item-input-inset">
+
+              <label class="item-input-wrapper">
+              Year:  <input type="number" ng-model="year">
+              </label>
+              <button class="button button-small button-balanced" ng-click="showClientsYear(year)" style="color:#fff">
+                GO
+              </button>
+            </div>
+
+          </div>
+          </div>
+      </div>
+
+      <div  ng-show="!chart" class="list">
+          <h5 style="color:#c6c6c6;text-align:center">Client Sales {{year}}</h5>
+          <div ng-repeat="cs in clientSales">
+                <a class="item" ng-click='setclientSalesMonth(cs.client)'>
+                  <p><i class="icon ion-android-contact"></i> Client: {{cs.client}}</p>
+                  <p><i class="icon ion-cash" aria-hidden="true"></i> Sales: {{cs.sales}}</p>
+                </a>
+          </div>
+      </div>
+
     </div>
-    {{sales.length}}
-    {{year}}
-    {{salesYear.length}}
-    {{salesLastYear.length}}
-    {{clientsYear}}
-    {{clientsLastYear}}
-    {{dataSalesYear}}
-    {{dataSalesLastYear}}
+
+      <div ng-show="chart" class="list">
+          <h5 style="color:#c6c6c6;text-align:center">Detail Sales {{year}}</h5>
+          <div ng-repeat="sale in salesYear">
+                <a class="item" ng-click="">
+                  <p><i class="icon ion-android-time"></i> Sales Date: {{sale.sales_date  | date:'yyyy-MM-dd'}}</p>
+                  <p><i class="icon ion-ios-briefcase"></i> Client: {{sale._client}}</p>
+                  <p><i class="icon ion-android-contact"></i> Contact: {{sale.contact}}</p>
+                  <p> <i class="icon ion-cash" aria-hidden="true"></i> Project Budget: {{sale.project_price}}€    Margin: {{sale.project_margin}}%</p>
+                </a>
+          </div>
+      </div>
+
+
 
   </ion-content>
+  <ion-footer-bar>
+
+    <div class="tabs">
+      <a class="tab-item" ng-click="show(true)">
+        Year Sales
+      </a>
+      <a class="tab-item" ng-click="show(false)">
+        Clients Year Sales
+      </a>
+    </div>
+
+  </ion-footer-bar>
 </ion-view>

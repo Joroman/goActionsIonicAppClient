@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 
-angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services', 'ion-floating-menu','chart.js'])
+angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services', 'ion-floating-menu','chart.js','nvd3'])
 
 .run(function($ionicPlatform, $rootScope, $ionicLoading, $timeout) {
   $ionicPlatform.ready(function() {
@@ -49,6 +49,11 @@ angular.module('myApp', ['ionic', 'myApp.controllers','myApp.services', 'ion-flo
 .config(function($stateProvider, $urlRouterProvider, ChartJsProvider) {
   // Configure all line charts
  ChartJsProvider.setOptions('line', {
+   chartColors: ['#5cb85c','#FF7E67'],
+   responsive: true
+ });
+
+ ChartJsProvider.setOptions('bar', {
    chartColors: ['#5cb85c','#FF7E67'],
    responsive: true
  });
