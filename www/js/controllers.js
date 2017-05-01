@@ -521,8 +521,8 @@ function($scope,actionsService,actionsSortService,$state,$ionicModal,clientsServ
 
 }])
 
-.controller('ActionDetailController',['$scope','$stateParams','actionsService','$ionicModal','clientsService','$ionicPopup','$state',
-function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPopup,$state){
+.controller('ActionDetailController',['$scope','$stateParams','actionsService','$ionicModal','clientsService','$ionicPopup','$state','salesService',
+function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPopup,$state,salesService){
   $scope.action={};
     var loadAction = function(){
       if($stateParams!= null){
@@ -647,6 +647,7 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
      };
      $scope.closeNewModal = function() {
        $scope.newModal.hide();
+       $state.go('app.activeActions');
      };
 
      var createNewActionPhase = function(){
@@ -689,6 +690,33 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
 
      }
 
+     var createSale = function (action) {
+       var sales={
+          contact : "",
+          _action : "",
+          project_price : 0,
+          project_margin : 0,
+          sales_date : "",
+          _client : "",
+       };
+
+       sales.contact        =action.prospection.contact;
+       sales._action        =action._id;
+       sales.project_price  =action.response.offer_budget;
+       sales.margin         =action.response.offer_margin;
+       sales.sales_date     =action.feedback.project_start_date;
+       sales._client        =action.client_name;
+
+       salesService.save(sales)
+       .$promise.then(
+         function(res){
+
+         },function(res){
+
+         }
+       );
+
+     };
 
     $scope.createNewPhase = function () {
       actionsService.delete({id:$scope.action._id})
@@ -697,9 +725,13 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
           actionsService.save($scope.action)
           .$promise.then(
             function(res){
-              $scope.closeNewModal();
-            //  $scope.actionState=getActionState(res);
-              $state.go('app.activeActions');
+               $scope.closeNewModal();
+               if($scope.action.response){
+                 if($scope.action.feedback.offer_win==true){
+                 createSale(res);
+                }
+              }
+
             },function(res){
               $scope.message = "Error: "+response.status + " " + response.statusText;
             });
@@ -1035,7 +1067,7 @@ function($scope,$stateParams,actionsService,$ionicModal,clientsService,$ionicPop
 
 
 .controller('SalesGraphDonut',['$scope','salesService','$ionicModal',function($scope,salesService,$ionicModal){
-//DONUT varibles
+  //DONUT varibles
   $scope.data4 = [];
   $scope.labels4=[];
   $scope.clientSales=[];
