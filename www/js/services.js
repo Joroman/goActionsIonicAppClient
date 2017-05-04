@@ -1,6 +1,6 @@
 angular.module('myApp.services',['ngResource'])
 
-.constant("baseURL","http://192.168.1.133:3000/")
+.constant("baseURL","http://ec2-35-158-94-35.eu-central-1.compute.amazonaws.com:8080/")
 
 .factory('actionsService',['$resource','baseURL',function($resource,baseURL){
     return $resource(baseURL+'actions/:id',null,
